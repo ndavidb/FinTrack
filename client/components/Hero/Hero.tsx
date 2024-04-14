@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {buttonVariants} from "@/components/ui/button";
+import Image from "next/image";
 
 export default () => {
     return (
@@ -21,8 +22,8 @@ export default () => {
                         </Link>
                     </div>
                 </div>
-                <div className="mt-14">
-                    <img src="/images/hero.png" className="w-full shadow-lg rounded-lg border" alt="" />
+                <div className="mt-20">
+                    <Image src="/images/hero.png" width={670} height={1200} className="w-full shadow-lg rounded-lg border" alt="" />
                 </div>
             </div>
         </section>

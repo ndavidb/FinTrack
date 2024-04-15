@@ -7,7 +7,7 @@ import Brand from "@/components/Brand/Brand";
 import {Button, buttonVariants} from "@/components/ui/button";
 import NavHeader from "@/components/navbar/NavHeader";
 
-export default () => {
+export default function Navbar () {
 
     const [state, setState] = useState(false)
 

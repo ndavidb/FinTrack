@@ -39,7 +39,7 @@ const Footer = () => {
                     <ul className="flex flex-wrap items-center gap-4 mt-6 sm:text-md sm:mt-0">
                         {
                             footerMenu.map((item, idx) => (
-                                <li className="text-gray-800 hover:text-blue-600 duration-150">
+                                <li key={idx} className="text-gray-800 hover:text-blue-600 duration-150">
                                     <Link key={idx} href={item.href}>
                                         {item.name}
                                     </Link>

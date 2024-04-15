@@ -2,7 +2,7 @@ import Link from "next/link";
 import {buttonVariants} from "@/components/ui/button";
 import Image from "next/image";
 
-export default () => {
+export default function Hero() {
     return (
         <section>
             <div className="max-w-screen-xl mx-auto px-4 py-28 gap-12 text-gray-600 md:px-8">

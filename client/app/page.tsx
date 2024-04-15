@@ -7,15 +7,15 @@ import Footer from "@/components/Footer/Footer";
 import FAQs from "@/components/FAQs/FAQs";
 import PricingSection from "@/components/Pricing/PricingSection";
 
-export default function Home(children : React.ReactNode) {
+export default function Home() {
   return (
       <>
           <Navbar />
           <main>
               <Hero />
+              <PricingSection />
+              <FAQs />
           </main>
-          <PricingSection />
-          <FAQs />
           <Footer/>
       </>
   );

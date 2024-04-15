@@ -4,6 +4,7 @@ import {Input} from "@/components/ui/input";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
+import Brand from "@/components/Brand/Brand";
 
 
 export default function Login(children: React.ReactNode){
@@ -12,7 +13,10 @@ export default function Login(children: React.ReactNode){
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
-                        <h1 className="text-4xl font-bold mb-2">Login</h1>
+                        <div className="w-full flex justify-center mb-4">
+                            <Link href="/"><Brand /></Link>
+                        </div>
+                        <h1 className="text-3xl font-bold mb-2">Login</h1>
                         <p className="text-balance text-muted-foreground text-gray-700">
                             Enter your email below to login to your account
                         </p>

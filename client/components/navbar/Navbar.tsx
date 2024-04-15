@@ -14,8 +14,8 @@ export default () => {
     // Replace javascript:void(0) paths with your paths
     const menu = [
         {name: "Features", path:""},
-        {name: "Pricing", path:""},
-        {name: "FAQs", path: ""},
+        {name: "Pricing", path:"/#pricing"},
+        {name: "FAQs", path: "/#FAQS"},
     ]
 
     return (
@@ -43,7 +43,7 @@ export default () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/" className={buttonVariants({ variant: "default" })}>
+                                <Link href="/register" className={buttonVariants({ variant: "default" })}>
                                     Sign Up
                                 </Link>
                             </li>

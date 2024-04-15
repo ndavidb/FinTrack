@@ -17,7 +17,7 @@ export default () => {
                         <Link href="/" className={buttonVariants({ variant: "outline" })}>
                             Features
                         </Link>
-                        <Link href="/" className={buttonVariants({ variant: "default" })}>
+                        <Link href="/register" className={buttonVariants({ variant: "default" })}>
                             Sign Up now
                         </Link>
                     </div>

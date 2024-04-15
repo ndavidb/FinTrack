@@ -25,7 +25,7 @@ const footerMenu = [
 
 const Footer = () => {
     return (
-        <footer className="pt-10 mt-10">
+        <footer className="pt-10 mt-20">
             <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="space-y-6 sm:max-w-md sm:mx-auto sm:text-center">
                     <Image src="/FinTrackLogo.svg" width={130}

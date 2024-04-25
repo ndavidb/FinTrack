@@ -34,7 +34,7 @@ export default function StatementTable({config, data}: Props) {
     });
     
     return (
-        <div className="border border-slate-200 rounded-sm border-solid md:overflow-x-scroll">
+        <div className="w-full border border-slate-200 rounded-sm border-solid md:overflow-x-scroll">
             <Table>
                 <TableHeader className="text-zinc-800">
                     {renderedHeaders}

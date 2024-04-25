@@ -1,5 +1,6 @@
 import {getCompanyCashFlow} from "@/lib/data";
 import StatementTable from "@/components/StatementTable/statementTable";
+import {useParams} from "next/navigation";
 
 interface Props {
 }
@@ -41,8 +42,9 @@ const config = [
     },
 ];
 
-export default async function Page({}: Props) {
-    const data = await getCompanyCashFlow("AAPL");
+export default async function Page({params} : {params: {ticker: string}}) {
+    const ticker = params.ticker;
+    const data = await getCompanyCashFlow(ticker);
     if (!data) return <div>Loading Cash Flow data...</div>
     return (
         <div>

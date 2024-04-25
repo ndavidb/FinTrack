@@ -2,7 +2,6 @@
 import {getCompanyKeyMetrics} from "@/lib/data";
 import RatioList from "@/components/ui/ratioList";
 
-
 const config = [
     {
         label: "Market Cap",
@@ -71,12 +70,13 @@ const config = [
     },
 ];
 
-export default async function CompanyProfilePage() {
+export default async function CompanyProfilePage({params} : {params:{ticker: string}}) {
+    const ticker = params.ticker;
+    const data = await getCompanyKeyMetrics(ticker);
     
-    const data = await getCompanyKeyMetrics("AAPL");
-    if (!data) return <div>Loading...</div>
+    if (!data) return <div>Loading Company Profile...</div>
     const companyData = data[0];
-    
+
     return(
         <div>
             <h2 className="font-bold text-xl mb-3">Key metrics</h2>

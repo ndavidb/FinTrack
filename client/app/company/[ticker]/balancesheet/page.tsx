@@ -57,8 +57,9 @@ const config = [
         render: (company: CompanyBalanceSheet) => company.retainedEarnings,
     },
 ];
-const Page = async () => {
-    const data = await getCompanyBalanceSheet("AAPL")
+export default async function BalanceSheetPage({params}: {params:{ticker:string}}){
+    const ticker = params.ticker;
+    const data = await getCompanyBalanceSheet(ticker)
     if (!data) return <div>Loading data...</div>
     const balanceSheetData = data[0];
     return (
@@ -71,4 +72,4 @@ const Page = async () => {
         
     );
 };
-export default Page;
+

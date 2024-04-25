@@ -1,22 +1,27 @@
-import Image from "next/image";
 import Brand from "@/components/Brand/Brand";
 import Link from "next/link";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {NavsFooter} from "@/components/Sidebar/SidebarLinks";
 import React from "react";
 
-interface NavigationLinks {
+interface FooterSidebarLinks {
     href: string,
     name: string,
     icon: React.ReactNode
 }
 
+interface MainSidebarLinks{
+    href: string;
+    name: string;
+    icon: React.ReactNode;
+}
+
 interface NavigationSearchProps {
-    links: NavigationLinks[];
+    mainSidebarLinks: MainSidebarLinks[];
+    footerSidebarLinks: FooterSidebarLinks[];
     sideBarTitle: string;
 }
 
-const Sidebar = ({links, sideBarTitle}: NavigationSearchProps) => {
+const Sidebar = ({mainSidebarLinks, footerSidebarLinks, sideBarTitle}: NavigationSearchProps) => {
     return (
         <>
             <nav className="hidden md:block fixed top-0 left-0 h-full w-full border-r bg-white space-y-8 md:w-64">
@@ -30,7 +35,7 @@ const Sidebar = ({links, sideBarTitle}: NavigationSearchProps) => {
                         <p className="px-4 text-md text-zinc-700 font-semibold mb-3">{sideBarTitle}</p>
                         <ul className="px-4 text-sm font-medium flex-1">
                             {
-                                links.map((item, idx) => (
+                                mainSidebarLinks.map((item, idx) => (
                                     <li key={idx}>
                                         <Link href={item.href} className="flex items-center gap-x-2 text-gray-700 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150">
                                             <div className="text-gray-500">{item.icon}</div>
@@ -43,7 +48,7 @@ const Sidebar = ({links, sideBarTitle}: NavigationSearchProps) => {
                         <div>
                             <ul className="px-4 pb-4 text-sm font-medium">
                                 {
-                                    NavsFooter.map((item, idx) => (
+                                    footerSidebarLinks.map((item, idx) => (
                                         <li key={idx}>
                                             <Link href={item.href} className="flex items-center gap-x-2 text-gray-700 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150">
                                                 <div className="text-gray-500">{item.icon}</div>

@@ -7,7 +7,6 @@ interface Props {
 }
 
 export default function StatementTable({config, data}: Props) {
-    
     const renderedHeaders = (
         <TableRow>
             {config.map((value: any, index: number) =>{
@@ -35,7 +34,7 @@ export default function StatementTable({config, data}: Props) {
     });
     
     return (
-        <div className="border border-slate-200 rounded-sm border-solid overflow-x-auto">
+        <div className="border border-slate-200 rounded-sm border-solid md:overflow-x-scroll">
             <Table>
                 <TableHeader className="text-zinc-800">
                     {renderedHeaders}

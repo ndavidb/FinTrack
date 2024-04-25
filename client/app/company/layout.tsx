@@ -1,13 +1,13 @@
 import React from "react";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import {NavigationSearchLinks} from "@/app/company/(overview)/StocksLinks";
 import CardWrapper from "@/components/CardDashboard/CardDashboard";
+import {sidebarFooterLinks, sidebarMainLinks} from "@/components/Sidebar/SidebarLinks";
 
 const Layout = ({children}: {children: React.ReactNode}) => {
     return (
         <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
             <div className="w-full flex-none md:w-64">
-                <Sidebar sideBarTitle="Stocks Search" links={NavigationSearchLinks}/>
+                <Sidebar sideBarTitle="Stocks Search"  footerSidebarLinks={sidebarFooterLinks} mainSidebarLinks={sidebarMainLinks}/>
             </div>
             <div className="flex flex-col w-full h-full">
                 <div className="p-8">

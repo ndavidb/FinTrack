@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import React from "react";
 import {cn} from "@/lib/utils";
 import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],

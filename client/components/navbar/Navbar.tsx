@@ -10,8 +10,7 @@ import NavHeader from "@/components/navbar/NavHeader";
 export default function Navbar () {
 
     const [state, setState] = useState(false)
-
-    // Replace javascript:void(0) paths with your paths
+    
     const menu = [
         {name: "Features", path:""},
         {name: "Pricing", path:"/#pricing"},

@@ -25,7 +25,7 @@ export async function searchCompanies(query: string){
 export async function getCompanyKeyMetrics(query: string){
     nonStore();
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.API_KEY}`)
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
         
         if (!response.ok){
             throw new Error("Request failed")
@@ -42,7 +42,7 @@ export async function getCompanyKeyMetrics(query: string){
 export async function getCompanyBalanceSheet(query: string){
     nonStore();
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?limit=40&apikey=${process.env.API_KEY}`)
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
         if (!response.ok){
             throw new Error("Request failed");
         }
@@ -58,7 +58,7 @@ export async function getCompanyBalanceSheet(query: string){
 export async function getCompanyCashFlow(query: string){
     nonStore();
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?limit=40&apikey=${process.env.API_KEY}`)
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
         if (!response.ok){
             throw new Error("Request failed");
         }
@@ -75,7 +75,7 @@ export async function getCompanyIncomeStatement(query: string){
     nonStore();
     try {
         const response = await fetch(
-            `https://financialmodelingprep.com/api/v3/income-statement/${query}?limit=50&apikey=${process.env.API_KEY}`
+            `https://financialmodelingprep.com/api/v3/income-statement/${query}?limit=50&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
         )
         if (!response.ok){
             throw new Error("Request failed");

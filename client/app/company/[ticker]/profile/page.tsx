@@ -84,3 +84,4 @@ export default async function CompanyProfilePage({params} : {params:{ticker: str
         </div>
     )
 };
+

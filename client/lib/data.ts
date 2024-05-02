@@ -1,17 +1,17 @@
 import {unstable_noStore as nonStore} from "next/cache";
+import {Inter} from "next/dist/compiled/@next/font/dist/google";
 
 export async function searchCompanies(query: string){
     nonStore();
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_APP_API}`)
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
         
         if (!response.ok){
             throw new Error("Request failed");
         }
         
-        const data : CompanySearch = await response.json();
-        console.log(process.env.REACT_APP_API_KEY);
-        console.log(data);
+        const data : CompanySearch[] = await response.json();
+        return data;
     } catch (error){
         if (error instanceof Error){
             console.error("Error message: ", error.message)

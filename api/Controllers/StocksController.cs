@@ -18,7 +18,7 @@ public class StocksController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllStocks()
+    public async Task<ActionResult<List<Stock>>> GetAllStocks()
     {
         var stocks = await _context.Stocks.ToListAsync();
         var stockDto = stocks.Select(stock => stock.ToStockDto());
@@ -27,7 +27,7 @@ public class StocksController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetStockById([FromRoute] int id)
+    public async Task<ActionResult<Stock>> GetStockById([FromRoute] int id)
     {
         var stock = await _context.Stocks.FindAsync(id);
 
@@ -36,11 +36,22 @@ public class StocksController : ControllerBase
             return NotFound();
         }
 
-        return Ok(stock);
+        return Ok(stock.ToStockDto());
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Stock>> CreateStockByRequest([FromBody] CreateStockRequestDto stockDto)
+    {
+        var stock = stockDto.ToStockFromCreateStockDto();
+        
+        _context.Stocks.Add(stock);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetStockById), new { id = stock.Id }, stock.ToStockDto());
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateStockById([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
+    public async Task<ActionResult<StockDto>> UpdateStockById([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
     {
         var stockModel = await _context.Stocks.FirstOrDefaultAsync(stock => stock.Id == id);
 
@@ -59,6 +70,23 @@ public class StocksController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(stockModel.ToStockDto());
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStockById([FromRoute] int id)
+    {
+        var stock = await _context.Stocks.FindAsync(id);
+
+        if (stock == null)
+        {
+            return NotFound();
+        }
+
+        _context.Stocks.Remove(stock);
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
     
     

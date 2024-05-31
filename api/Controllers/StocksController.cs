@@ -12,11 +12,12 @@ namespace api.Controllers;
 public class StocksController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+
     public StocksController(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<List<Stock>>> GetAllStocks()
     {
@@ -27,17 +28,14 @@ public class StocksController : ControllerBase
         return Ok(stockDto);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Stock>> GetStockById([FromRoute] int id)
     {
         var stock = await _context.Stocks
             .Include(c => c.Comments)
             .FirstOrDefaultAsync(s => s.Id == id);
 
-        if (stock == null)
-        {
-            return NotFound();
-        }
+        if (stock == null) return NotFound();
 
         return Ok(stock.ToStockDto());
     }
@@ -45,23 +43,25 @@ public class StocksController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Stock>> CreateStockByRequest([FromBody] CreateStockRequestDto stockDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var stock = stockDto.ToStockFromCreateStockDto();
-        
+
         await _context.Stocks.AddAsync(stock);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetStockById), new { id = stock.Id }, stock.ToStockDto());
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<StockDto>> UpdateStockById([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<StockDto>> UpdateStockById([FromRoute] int id,
+        [FromBody] UpdateStockRequestDto updateDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
         var stockModel = await _context.Stocks.FirstOrDefaultAsync(stock => stock.Id == id);
 
-        if (stockModel == null)
-        {
-            return NotFound();
-        }
+        if (stockModel == null) return NotFound();
 
         stockModel.Symbol = updateDto.Symbol;
         stockModel.CompanyName = updateDto.CompanyName;
@@ -75,15 +75,12 @@ public class StocksController : ControllerBase
         return Ok(stockModel.ToStockDto());
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteStockById([FromRoute] int id)
     {
         var stock = await _context.Stocks.FindAsync(id);
 
-        if (stock == null)
-        {
-            return NotFound();
-        }
+        if (stock == null) return NotFound();
 
         _context.Stocks.Remove(stock);
 
@@ -91,6 +88,4 @@ public class StocksController : ControllerBase
 
         return NoContent();
     }
-    
-    
 }

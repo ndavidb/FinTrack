@@ -20,7 +20,8 @@ public class StocksController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Stock>>> GetAllStocks()
     {
-        var stocks = await _context.Stocks.ToListAsync();
+        var stocks = await _context.Stocks
+            .Include(c => c.Comments).ToListAsync();
         var stockDto = stocks.Select(stock => stock.ToStockDto());
 
         return Ok(stockDto);
@@ -29,7 +30,9 @@ public class StocksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Stock>> GetStockById([FromRoute] int id)
     {
-        var stock = await _context.Stocks.FindAsync(id);
+        var stock = await _context.Stocks
+            .Include(c => c.Comments)
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (stock == null)
         {
@@ -44,7 +47,7 @@ public class StocksController : ControllerBase
     {
         var stock = stockDto.ToStockFromCreateStockDto();
         
-        _context.Stocks.Add(stock);
+        await _context.Stocks.AddAsync(stock);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetStockById), new { id = stock.Id }, stock.ToStockDto());

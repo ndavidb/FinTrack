@@ -1,4 +1,6 @@
 using api.Data;
+using api.Interfaces;
+using api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IStockService, StockService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -21,5 +25,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
 
 app.Run();

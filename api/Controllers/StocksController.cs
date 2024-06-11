@@ -20,6 +20,8 @@ public class StocksController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<StockDto>>> GetAllStocks()
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
         var stocksDto = await _stockService.GetAllAsync();
 
         return Ok(stocksDto);
@@ -28,6 +30,8 @@ public class StocksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<StockDto>> GetStockById([FromRoute] int id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var stock = await _stockService.GetStockByIdAsync(id);
 
         if (stock == null) return NotFound();

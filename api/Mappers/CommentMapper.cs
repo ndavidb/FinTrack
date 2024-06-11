@@ -26,7 +26,7 @@ public static class CommentMapper
             StockId = stockId
         };
     }   
-    public static Comment ToCommentFromUpdateDto(this CreateCommentDtoRequest commentDto, int stockId)
+    public static Comment ToCommentFromUpdateDto(this UpdateCommentRequestDto commentDto, int stockId)
     {
         return new Comment
         {

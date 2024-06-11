@@ -5,7 +5,7 @@ using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Repositories;
+namespace api.Services;
 
 public class CommentService: ICommentService
 {
@@ -40,13 +40,35 @@ public class CommentService: ICommentService
         return newComment;
     }
 
-    public async Task<CommentDto?> UpdateCommentAsync(UpdateCommentRequestDto updatedCommentDto, int id)
+    public async Task<Comment?> UpdateCommentAsync(Comment commentModel, int id)
     {
-        throw new NotImplementedException();
+        var existingComment = await _context.Comments.FindAsync(id);
+        
+        if (existingComment == null)
+        {
+            return null;
+        }
+
+        existingComment.Title = commentModel.Title;
+        existingComment.Content = commentModel.Content;
+
+        await _context.SaveChangesAsync();
+
+        return commentModel;
     }
 
     public async Task<CommentDto?> DeleteCommentAsync(int id)
     {
-        throw new NotImplementedException();
+        var comment = await _context.Comments.FindAsync(id);
+
+        if (comment == null)
+        {
+            return null;
+        }
+        
+        _context.Comments.Remove(comment);
+        await _context.SaveChangesAsync();
+
+        return comment.ToCommentDto();
     }
 }

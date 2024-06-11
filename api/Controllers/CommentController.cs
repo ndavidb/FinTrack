@@ -61,17 +61,12 @@ public class CommentController : ControllerBase
     public async Task<ActionResult<CommentDto>> UpdateComment([FromRoute] int id,
         [FromBody] UpdateCommentRequestDto updateDto)
     {
-        var commentModel = await _context.Comments.FindAsync(id);
+        var commentModel = await _commentService.UpdateCommentAsync(updateDto.ToCommentFromUpdateDto(id), id);
 
         if (commentModel ==null)
         {
             return NotFound("Comment could not be found");
         }
-
-        commentModel.Title = updateDto.Title;
-        commentModel.Content = updateDto.Content;
-
-        await _context.SaveChangesAsync();
 
         return Ok(commentModel.ToCommentDto());
     }
@@ -79,15 +74,12 @@ public class CommentController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteComment([FromRoute] int id)
     {
-        var comment = await _context.Comments.FindAsync(id);
+        var comment = await _commentService.DeleteCommentAsync(id);
 
         if (comment == null)
         {
             return NotFound();
         }
-
-        _context.Comments.Remove(comment);
-        await _context.SaveChangesAsync();
 
         return NoContent();
     }

@@ -8,6 +8,6 @@ public interface ICommentService
     Task<List<CommentDto>> GetAllCommentsAsync();
     Task<CommentDto?> GetCommentByIdAsync(int id);
     Task<Comment> CreateCommentAsync(Comment newComment);
-    Task<CommentDto?> UpdateCommentAsync(UpdateCommentRequestDto updatedCommentDto, int id);
+    Task<Comment?> UpdateCommentAsync(Comment commentModel, int id);
     Task<CommentDto?> DeleteCommentAsync(int id);
 }

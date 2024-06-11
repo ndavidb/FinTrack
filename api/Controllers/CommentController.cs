@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dto.Comment;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,51 +13,48 @@ namespace api.Controllers;
 public class CommentController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
-    public CommentController(ApplicationDbContext context)
+    private readonly ICommentService _commentService;
+    private readonly IStockService _stockService;
+    public CommentController(ApplicationDbContext context, ICommentService commentService, IStockService stockService)
       {
         _context = context;
-    }
+        _commentService = commentService;
+        _stockService = stockService;
+
+      }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CommentDto>>> GetAllComments()
+    public async Task<ActionResult<List<CommentDto>>> GetAllComments()
     {
-        var comments = await _context.Comments.ToListAsync();
-        var commentDto = comments.Select(c => c.ToCommentDto());
+        var commentsDto = await _commentService.GetAllCommentsAsync();
 
-        return Ok(commentDto);
+        return Ok(commentsDto);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<CommentDto>> GetCommentById([FromRoute] int id)
     {
-        var comment = await _context.Comments.FindAsync(id);
+        var commentDto = await _commentService.GetCommentByIdAsync(id);
 
-        if (comment == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(comment.ToCommentDto());
+        return Ok(commentDto);
     }
 
     [HttpPost("{stockId}")]
-    public async Task<ActionResult<CommentDto>> CreateComment([FromRoute] int stockId, [FromBody] CreateCommentDtoRequest commentDto)
+    public async Task<ActionResult<CommentDto>> CreateComment([FromRoute] int stockId, [FromBody] CreateCommentDtoRequest newCommentDto)
     {
-        var stockExists = await _context.Stocks.AnyAsync(s => s.Id == stockId);
+        var stockExists = await _stockService.StockExistsAsync(stockId);
         
         if (!stockExists)
         {
             return BadRequest("Stock does not exist");
         }
         
-        var comment = commentDto.ToCommentFromCommentDto(stockId);
-
-        await _context.Comments.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        var comment = newCommentDto.ToCommentFromCommentDto(stockId);
+        await _commentService.CreateCommentAsync(comment);
 
         return CreatedAtAction(nameof(GetCommentById), 
-            new { id = comment.Id }, 
-            comment.ToCommentDto());
+            new { id = comment.Id}, 
+            comment);
     }
 
     [HttpPut("{id}")]

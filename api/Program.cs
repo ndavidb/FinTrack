@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

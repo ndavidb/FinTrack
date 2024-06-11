@@ -17,20 +17,23 @@ public class StockService : IStockService
     }
 
 
-    public async Task<List<Stock>> GetAllAsync()
+    public async Task<List<StockDto>> GetAllAsync()
     {
-        var stocks = await _context.Stocks.Include(c => c.Comments).ToListAsync();
+        var stocks = await _context.Stocks
+            .Include(c => c.Comments)
+            .ToListAsync();
+        var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
 
-        return stocks;
+        return stockDto;
     }
 
-    public async Task<Stock?> GetStockByIdAsync(int id)
+    public async Task<StockDto?> GetStockByIdAsync(int id)
     {
         var stock = await _context.Stocks
             .Include(c => c.Comments)
             .FirstOrDefaultAsync(s => s.Id == id);
-
-        return stock;
+        
+        return stock?.ToStockDto();
     }
 
     public async Task<Stock?> UpdateStockAsync(UpdateStockRequestDto updateDto, int id)
@@ -51,13 +54,31 @@ public class StockService : IStockService
         return stockModel;
     }
 
-    public Task<StockDto?> CreateStockAsync(CreateStockRequestDto createDto)
+    public async Task<StockDto?> CreateStockAsync(CreateStockRequestDto newStock)
     {
-        throw new NotImplementedException();
+        var stock = newStock.ToStockFromCreateStockDto();
+        await _context.Stocks.AddAsync(stock);
+        await _context.SaveChangesAsync();
+        return stock.ToStockDto();
+
     }
 
-    public Task<ActionResult> DeleteStockAsync(int id)
+    public async Task<StockDto?> DeleteStockAsync(int id)
     {
-        throw new NotImplementedException();
+        var stock = await _context.Stocks.FindAsync(id);
+        if (stock == null)
+        {
+            return null;
+        }
+        
+        _context.Stocks.Remove(stock);
+
+        await _context.SaveChangesAsync();
+        return stock.ToStockDto();
+    }
+
+    public async Task<bool> StockExistsAsync(int id)
+    {
+        return await _context.Stocks.AnyAsync(s => s.Id == id);
     }
 }

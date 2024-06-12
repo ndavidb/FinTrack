@@ -1,8 +1,9 @@
 ﻿using api.Data;
 using api.Dto;
+using api.Dto.Stock;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
-using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
@@ -12,17 +13,18 @@ namespace api.Controllers;
 public class StocksController : ControllerBase
 {
     private readonly IStockService _stockService;
-    public StocksController(ApplicationDbContext context, IStockService stockService)
+    public StocksController(IStockService stockService)
     {
         _stockService = stockService;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<StockDto>>> GetAllStocks()
+    public async Task<ActionResult<List<StockDto>>> GetAllStocks([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         
-        var stocksDto = await _stockService.GetAllAsync();
+        
+        var stocksDto = await _stockService.GetAllAsync(query);
 
         return Ok(stocksDto);
     }

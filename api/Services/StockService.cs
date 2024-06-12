@@ -1,5 +1,7 @@
 using api.Data;
 using api.Dto;
+using api.Dto.Stock;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -17,12 +19,29 @@ public class StockService : IStockService
     }
 
 
-    public async Task<List<StockDto>> GetAllAsync()
+    public async Task<List<StockDto>> GetAllAsync(QueryObject query)
     {
-        var stocks = await _context.Stocks
-            .Include(c => c.Comments)
-            .ToListAsync();
-        var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
+        var stocks = _context.Stocks
+            .Include(c => c.Comments).AsQueryable();
+            
+        if (!String.IsNullOrWhiteSpace(query.CompanyName))
+        {
+            stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
+        }
+
+        if (!String.IsNullOrWhiteSpace(query.Symbol))
+        {
+            stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
+        }
+        
+        stocks = query.IsSortDescending ?
+            stocks.OrderByDescending(s => s.CompanyName) :
+            stocks.OrderBy(s => s.CompanyName);
+        
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+        stocks = stocks.Skip(skipNumber).Take(query.PageSize);
+        
+        var stockDto = await stocks.Select(s => s.ToStockDto()).ToListAsync();
 
         return stockDto;
     }

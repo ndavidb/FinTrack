@@ -3,6 +3,7 @@ using api.Dto.Comment;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,7 @@ public class CommentController : ControllerBase
       }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<List<CommentDto>>> GetAllComments()
     {
         var commentsDto = await _commentService.GetAllCommentsAsync();

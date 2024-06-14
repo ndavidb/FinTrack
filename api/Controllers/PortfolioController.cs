@@ -38,4 +38,54 @@ public class PortfolioController : ControllerBase
 
         return Ok(userPortfolio);
     }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<ActionResult<StockDto>> CreatePortfolio(string symbol)
+    {
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
+        
+        var stock = await _stockService.GetStockBySymbolAsync(symbol);
+
+        if (stock == null)
+        {
+            return BadRequest("Stock not found");
+        }
+
+        var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);
+        
+        if (userPortfolio.Any(s => s.Symbol.ToLower() == symbol.ToLower()))
+        {
+            return BadRequest("Stock already exists in portfolio");
+        }
+
+        var newPortfolio = new Portfolio
+        {
+            StockId = stock.Id,
+            AppUserId = appUser.Id
+        };
+
+        await _portfolioService.CreatePortfolioAsync(newPortfolio);
+
+        return Created();
+
+    }
+    
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> DeletePortfolioStock(string symbol)
+    {
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
+        
+        var deleteResult = await _portfolioService.DeletePortfolioAsync(appUser, symbol);
+
+        if (!deleteResult)
+        {
+            return BadRequest("Stock not found in portfolio");
+        }
+        
+        return Ok();
+    }
 }

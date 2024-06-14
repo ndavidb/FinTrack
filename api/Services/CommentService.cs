@@ -17,7 +17,7 @@ public class CommentService: ICommentService
     
     public async Task<List<CommentDto>> GetAllCommentsAsync()
     {
-        var comments = await _context.Comments.ToListAsync();
+        var comments = await _context.Comments.Include(u => u.AppUser).ToListAsync();
         var commentsDto = comments
             .Select(c => c.ToCommentDto())
             .ToList();
@@ -27,7 +27,9 @@ public class CommentService: ICommentService
 
     public async Task<CommentDto?> GetCommentByIdAsync(int id)
     {
-        var comment = await _context.Comments.FindAsync(id);
+        var comment = await _context.Comments
+            .Include(u => u.AppUser)
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         return comment?.ToCommentDto();
     }

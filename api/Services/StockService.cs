@@ -22,7 +22,7 @@ public class StockService : IStockService
     public async Task<List<StockDto>> GetAllAsync(QueryObject query)
     {
         var stocks = _context.Stocks
-            .Include(c => c.Comments).AsQueryable();
+            .Include(c => c.Comments).ThenInclude(u => u.AppUser).AsQueryable();
             
         if (!String.IsNullOrWhiteSpace(query.CompanyName))
         {
@@ -53,6 +53,13 @@ public class StockService : IStockService
             .FirstOrDefaultAsync(s => s.Id == id);
         
         return stock?.ToStockDto();
+    }
+
+    public async Task<Stock?> GetStockBySymbolAsync(string symbol)
+    {
+        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol == symbol);
+
+        return stock;
     }
 
     public async Task<Stock?> UpdateStockAsync(UpdateStockRequestDto updateDto, int id)
@@ -99,5 +106,9 @@ public class StockService : IStockService
     public async Task<bool> StockExistsAsync(int id)
     {
         return await _context.Stocks.AnyAsync(s => s.Id == id);
+    }
+    public async Task<bool> StockExistsBySymbolAsync(string symbol)
+    {
+        return await _context.Stocks.AnyAsync(s => s.Symbol.ToLower() == symbol.ToLower());
     }
 }

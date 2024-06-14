@@ -3,6 +3,7 @@ using api.Dto;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Services;
@@ -10,9 +11,11 @@ namespace api.Services;
 public class PortfolioService : IPortfolioService
 {
     private readonly ApplicationDbContext _context;
-    public PortfolioService(ApplicationDbContext context)
+    private readonly IStockService _stockService;
+    public PortfolioService(ApplicationDbContext context, IStockService stockService)
     {
         _context = context;
+        _stockService = stockService;
     }
 
 
@@ -32,4 +35,32 @@ public class PortfolioService : IPortfolioService
 
             }).ToListAsync();
     }
+
+    public async Task<Portfolio> CreatePortfolioAsync(Portfolio portfolio)
+    {
+        await _context.Portfolios.AddAsync(portfolio);
+        await _context.SaveChangesAsync();
+
+        return portfolio;
+    }
+
+    public async Task<bool> DeletePortfolioAsync(AppUser user, string symbol)
+    {
+        var portfolioModel = await _context.Portfolios
+            .FirstOrDefaultAsync(p =>
+                p.AppUserId == user.Id 
+                && p.Stock.Symbol.ToLower() == symbol.ToLower()
+            );
+
+        if (portfolioModel == null)
+        {
+            return false;
+        }
+        
+        _context.Portfolios.Remove(portfolioModel);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+    
 }

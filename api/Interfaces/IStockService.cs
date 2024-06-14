@@ -10,6 +10,7 @@ public interface IStockService
 {
     Task<List<StockDto>> GetAllAsync(QueryObject query);
     Task<StockDto?> GetStockByIdAsync(int id);
+    Task<Stock?> GetStockBySymbolAsync(string symbol);
     Task<Stock?> UpdateStockAsync(UpdateStockRequestDto updateDto, int id);
     Task<StockDto?> CreateStockAsync(CreateStockRequestDto createDto);
     Task<StockDto?> DeleteStockAsync(int id);

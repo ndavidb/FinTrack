@@ -4,6 +4,7 @@ using api.Dto.Stock;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
@@ -19,6 +20,7 @@ public class StocksController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<List<StockDto>>> GetAllStocks([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);

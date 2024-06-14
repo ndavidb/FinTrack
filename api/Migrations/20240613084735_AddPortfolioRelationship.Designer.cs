@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Data;
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240613084735_AddPortfolioRelationship")]
+    partial class AddPortfolioRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28227fc4-074c-402c-8e07-5d76430c3ec5",
+                            Id = "9070eb92-fff9-4aee-937d-3c196564b9f9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "67172e9f-fcc8-4bb9-977a-f7606cf0ac52",
+                            Id = "076da7b6-dde1-4fc0-a865-db1d9cea2e63",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -273,7 +276,7 @@ namespace api.Migrations
 
                     b.HasIndex("StockId");
 
-                    b.ToTable("Portfolios");
+                    b.ToTable("Portfolio");
                 });
 
             modelBuilder.Entity("api.Models.Stock", b =>

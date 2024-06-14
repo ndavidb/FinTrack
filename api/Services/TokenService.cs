@@ -16,7 +16,7 @@ public class TokenService : ITokenService
     public TokenService(IConfiguration config)
     {
         _config = config;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SigningKey"]));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:TokenKey"]));
     }
     
     public string CreateToken(AppUser user)
@@ -34,8 +34,8 @@ public class TokenService : ITokenService
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(7),
             SigningCredentials = creds,
-            Issuer = _config["Issuer"],
-            Audience = _config["Audience"]
+            Issuer = _config["JWT:Issuer"],
+            Audience = _config["JWT:Audience"]
         };
         
         var tokenHandler = new JwtSecurityTokenHandler();

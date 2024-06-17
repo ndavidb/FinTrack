@@ -48,7 +48,9 @@ public class StocksController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var stock = await _stockService.CreateStockAsync(stockDto);
+        var stock = stockDto.ToStockFromCreateStockDto();
+
+        var stockModel = await _stockService.CreateStockAsync(stock);
 
         return CreatedAtAction(nameof(GetStockById), new { id = stock?.Id }, stock);
     }

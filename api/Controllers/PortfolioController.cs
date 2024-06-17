@@ -2,7 +2,9 @@
 using api.Dto;
 using api.Extensions;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +18,19 @@ public class PortfolioController : ControllerBase
     private readonly IPortfolioService _portfolioService;
     private readonly IStockService _stockService;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IFmpService _fmpService;
 
     public PortfolioController(
         IPortfolioService portfolioService,
         IStockService stockService,
-        UserManager<AppUser> userManager
+        UserManager<AppUser> userManager,
+        IFmpService fmpService
     )
     {
         _portfolioService = portfolioService;
         _stockService = stockService;
         _userManager = userManager;
+        _fmpService = fmpService;
     }
 
     [HttpGet]
@@ -50,7 +55,16 @@ public class PortfolioController : ControllerBase
 
         if (stock == null)
         {
-            return BadRequest("Stock not found");
+            stock = await _fmpService.FindStockBySymbolAsync(symbol);
+            
+            if (stock == null)
+            {
+                return BadRequest("Stock not found");
+            }
+            else
+            {
+                await _stockService.CreateStockAsync(stock);
+            }
         }
 
         var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);

@@ -80,12 +80,11 @@ public class StockService : IStockService
         return stockModel;
     }
 
-    public async Task<StockDto?> CreateStockAsync(CreateStockRequestDto newStock)
+    public async Task<StockDto?> CreateStockAsync(Stock stockModel)
     {
-        var stock = newStock.ToStockFromCreateStockDto();
-        await _context.Stocks.AddAsync(stock);
+        await _context.Stocks.AddAsync(stockModel);
         await _context.SaveChangesAsync();
-        return stock.ToStockDto();
+        return stockModel.ToStockDto();
 
     }
 

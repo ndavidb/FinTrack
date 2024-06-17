@@ -15,16 +15,16 @@ namespace api.Controllers;
 [ApiController]
 public class CommentController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
     private readonly ICommentService _commentService;
     private readonly IStockService _stockService;
     private readonly UserManager<AppUser> _userManager;
-    public CommentController(ApplicationDbContext context, ICommentService commentService, IStockService stockService, UserManager<AppUser> userManager)
+    private readonly IFmpService _fmpService;
+    public CommentController(ApplicationDbContext context, ICommentService commentService, IStockService stockService, UserManager<AppUser> userManager, IFmpService fmpService)
       {
-        _context = context;
         _commentService = commentService;
         _stockService = stockService;
         _userManager = userManager;
+        _fmpService = fmpService;
       }
 
     [HttpGet]
@@ -45,21 +45,29 @@ public class CommentController : ControllerBase
         return Ok(commentDto);
     }
 
-    [HttpPost("{stockId}")]
-    public async Task<ActionResult<CommentDto>> CreateComment([FromRoute] int stockId, [FromBody] CreateCommentDtoRequest newCommentDto)
+    [HttpPost("{symbol:alpha}")]
+    public async Task<ActionResult<CommentDto>> CreateComment([FromRoute] string symbol, [FromBody] CreateCommentDtoRequest newCommentDto)
     {
         
-        var stockExists = await _stockService.StockExistsAsync(stockId);
+        var stock = await _stockService.GetStockBySymbolAsync(symbol);
         
-        if (!stockExists)
+        if (stock == null)
         {
-            return BadRequest("Stock does not exist");
+            stock = await _fmpService.FindStockBySymbolAsync(symbol);
+            if (stock == null)
+            {
+                return BadRequest("Stock does not exists");
+            }
+            else
+            {
+                await _stockService.CreateStockAsync(stock);
+            }
         }
         
         var username = User.GetUsername();
         var appUser = await _userManager.FindByNameAsync(username);
         
-        var comment = newCommentDto.ToCommentFromCommentDto(stockId);
+        var comment = newCommentDto.ToCommentFromCommentDto(stock.Id);
         comment.AppUserId = appUser.Id;
         
         await _commentService.CreateCommentAsync(comment);

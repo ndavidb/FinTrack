@@ -46,13 +46,11 @@ public class StockService : IStockService
         return stockDto;
     }
 
-    public async Task<StockDto?> GetStockByIdAsync(int id)
+    public async Task<Stock?> GetStockByIdAsync(int id)
     {
-        var stock = await _context.Stocks
+        return await _context.Stocks
             .Include(c => c.Comments)
             .FirstOrDefaultAsync(s => s.Id == id);
-        
-        return stock?.ToStockDto();
     }
 
     public async Task<Stock?> GetStockBySymbolAsync(string symbol)

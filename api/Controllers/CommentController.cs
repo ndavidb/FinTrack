@@ -46,11 +46,14 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("{symbol:alpha}")]
+    [Authorize]
     public async Task<ActionResult<CommentDto>> CreateComment([FromRoute] string symbol, [FromBody] CreateCommentDtoRequest newCommentDto)
     {
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
         
         var stock = await _stockService.GetStockBySymbolAsync(symbol);
-        
+
         if (stock == null)
         {
             stock = await _fmpService.FindStockBySymbolAsync(symbol);
@@ -63,9 +66,6 @@ public class CommentController : ControllerBase
                 await _stockService.CreateStockAsync(stock);
             }
         }
-        
-        var username = User.GetUsername();
-        var appUser = await _userManager.FindByNameAsync(username);
         
         var comment = newCommentDto.ToCommentFromCommentDto(stock.Id);
         comment.AppUserId = appUser.Id;

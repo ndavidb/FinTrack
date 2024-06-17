@@ -27,7 +27,7 @@ public static class StockMappers
             Symbol = stockRequestDto.Symbol,
             CompanyName = stockRequestDto.CompanyName,
             Purchase = stockRequestDto.Purchase,
-            LastDiv = stockRequestDto.Purchase,
+            LastDiv = stockRequestDto.LastDiv,
             Industry = stockRequestDto.Industry,
             MarketCap = stockRequestDto.MarketCap,
         };

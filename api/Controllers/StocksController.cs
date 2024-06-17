@@ -1,4 +1,4 @@
-﻿using api.Data;
+﻿
 using api.Dto;
 using api.Dto.Stock;
 using api.Helpers;
@@ -40,19 +40,19 @@ public class StocksController : ControllerBase
 
         if (stock == null) return NotFound();
 
-        return Ok(stock);
+        return Ok(stock.ToStockDto());
     }
 
     [HttpPost]
-    public async Task<ActionResult<StockDto>> CreateStockByRequest([FromBody] CreateStockRequestDto stockDto)
+    public async Task<ActionResult<StockDto>> CreateStockByRequest([FromBody] CreateStockRequestDto newStock)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var stock = stockDto.ToStockFromCreateStockDto();
+        var stock = newStock.ToStockFromCreateStockDto();
 
-        var stockModel = await _stockService.CreateStockAsync(stock);
+        var stockDto = await _stockService.CreateStockAsync(stock);
 
-        return CreatedAtAction(nameof(GetStockById), new { id = stock?.Id }, stock);
+        return CreatedAtAction(nameof(GetStockById), new { id = stock.Id }, stockDto);
     }
 
     [HttpPut("{id}")]

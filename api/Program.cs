@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using api.Data;
 using api.Interfaces;
 using api.Models;
@@ -92,6 +93,11 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IFmpService, FmpService>();
 builder.Services.AddHttpClient<IFmpService, FmpService>();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 var app = builder.Build();
 

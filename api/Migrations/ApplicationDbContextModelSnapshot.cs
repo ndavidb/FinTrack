@@ -50,13 +50,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b2df6d6-cc38-4585-ad15-d2f98f205a75",
+                            Id = "a130f903-4445-4c37-a67b-919e70de0312",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "14ee9c29-7aae-4ba3-916f-3d2e60476cbf",
+                            Id = "263b8605-0285-432c-9eb5-13f44625604f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -241,7 +241,6 @@ namespace api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
@@ -371,9 +370,7 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("api.Models.Stock", "Stock")
                         .WithMany("Comments")

@@ -4,8 +4,8 @@ import {Inter} from "next/dist/compiled/@next/font/dist/google";
 export async function searchCompanies(query: string){
     nonStore();
     try {
+        console.log(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
         const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        
         if (!response.ok){
             throw new Error("Request failed");
         }

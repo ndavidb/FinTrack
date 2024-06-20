@@ -59,18 +59,16 @@ public class CommentService: ICommentService
         return commentModel;
     }
 
-    public async Task<CommentDto?> DeleteCommentAsync(int id)
+    public async Task DeleteCommentAsync(int id)
     {
         var comment = await _context.Comments.FindAsync(id);
 
         if (comment == null)
         {
-            return null;
+            throw new Exception("Comment not found");
         }
         
         _context.Comments.Remove(comment);
         await _context.SaveChangesAsync();
-
-        return comment.ToCommentDto();
     }
 }

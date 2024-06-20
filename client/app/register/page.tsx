@@ -8,11 +8,11 @@ import Brand from "@/components/Brand/Brand";
 export default function Register(){
     return (
         <main className="w-full h-screen flex flex-col justify-center items-center">
-            <Link href="/"><Brand/></Link>
-            <div className="mt-10">
+            <div><Link href="/"><Brand/></Link></div>
+            <div className="mt-5">
                 <Card className="mx-auto max-w-sm">
-                    <CardHeader>
-                        <CardTitle className="text-xl">Sign Up</CardTitle>
+                    <CardHeader className="flex items-center">
+                        <CardTitle className="text-3xl font-bold mb-2">Sign Up</CardTitle>
                         <CardDescription>
                             Enter your information to create an account
                         </CardDescription>
@@ -59,7 +59,7 @@ export default function Register(){
                         </div>
                         <div className="mt-4 text-center text-sm">
                             Already have an account?{" "}
-                            <Link href="/" className="underline">
+                            <Link href="/login" className="underline">
                                 Sign in
                             </Link>
                         </div>

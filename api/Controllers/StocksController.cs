@@ -20,7 +20,6 @@ public class StocksController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult<List<StockDto>>> GetAllStocks([FromQuery] QueryObject query)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);

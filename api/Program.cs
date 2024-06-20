@@ -113,8 +113,8 @@ app.UseCors(c => c
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins("http://localhost:3000/",
-        "https://www.ndavidbello.live/")
+     .WithOrigins("http://localhost:3000/",
+         "https://www.ndavidbello.live/")
     .SetIsOriginAllowed(origin => true));
 
 app.UseAuthentication();

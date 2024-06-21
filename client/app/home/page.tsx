@@ -5,17 +5,19 @@ import React, {ChangeEvent, SyntheticEvent, useState} from "react";
 import HomePortfolioReview from "@/components/UserHomePortfolio/HomePortfolioReview";
 import SearchResultList from "@/components/Search/SearchResultList";
 import {searchCompanies} from "@/lib/data";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import SearchStocks from "@/components/Search/SearchStocks";
+import {useRouter} from "next/router";
 
 interface Props {
 }
 
 export default function HomeUser({}: Props) {
+    const isUserAuthenticated : Boolean = false;
     const [search, setSearch] = useState<string>("");
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
     const [serverError, setServerError] = useState<string | null>(null);
+
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) =>{
         setSearch(e.target.value);
     }

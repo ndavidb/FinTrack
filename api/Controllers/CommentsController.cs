@@ -13,13 +13,13 @@ namespace api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class CommentController : ControllerBase
+public class CommentsController : ControllerBase
 {
     private readonly ICommentService _commentService;
     private readonly IStockService _stockService;
     private readonly UserManager<AppUser> _userManager;
     private readonly IFmpService _fmpService;
-    public CommentController(ApplicationDbContext context, ICommentService commentService, IStockService stockService, UserManager<AppUser> userManager, IFmpService fmpService)
+    public CommentsController(ApplicationDbContext context, ICommentService commentService, IStockService stockService, UserManager<AppUser> userManager, IFmpService fmpService)
       {
         _commentService = commentService;
         _stockService = stockService;

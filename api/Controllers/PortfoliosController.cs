@@ -13,14 +13,14 @@ namespace api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PortfolioController : ControllerBase
+public class PortfoliosController : ControllerBase
 {
     private readonly IPortfolioService _portfolioService;
     private readonly IStockService _stockService;
     private readonly UserManager<AppUser> _userManager;
     private readonly IFmpService _fmpService;
 
-    public PortfolioController(
+    public PortfoliosController(
         IPortfolioService portfolioService,
         IStockService stockService,
         UserManager<AppUser> userManager,

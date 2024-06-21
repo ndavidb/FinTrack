@@ -9,20 +9,20 @@ import Image from "next/image";
 import Brand from "@/components/Brand/Brand";
 import {useUser} from "@/lib/auth";
 import {useRouter} from "next/navigation";
+import Cookies from "js-cookie";
 
 
 export default function Login() {
-    const api = "http://localhost:5254/Account/login"
+    const api = "http://localhost:5254/accounts/login"
     const router = useRouter();
     const {mutate} = useUser();
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmitLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
-
 
         try {
             const response = await fetch(api, {
@@ -33,6 +33,7 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 await mutate(data);
+                Cookies.set('token', data.token, {expires: 7});
                 router.push('/home');
             } else {
                 const errorData = await response.json();
@@ -58,7 +59,7 @@ export default function Login() {
                         </p>
                     </div>
                     {error && <div className="text-red-500">{error}</div>}
-                    <form className="grid gap-4" onSubmit={handleSubmit}>
+                    <form className="grid gap-4" onSubmit={handleSubmitLogin}>
                         <div className="grid gap-4">
                             <Label htmlFor="email" className="text-md">Email</Label>
                             <Input

@@ -1,12 +1,12 @@
 'use client';
 
-import Searchbar from "@/components/Search/Searchbar";
 import React, {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import HomePortfolioReview from "@/components/UserHomePortfolio/HomePortfolioReview";
 import SearchResultList from "@/components/Search/SearchResultList";
 import {searchCompanies} from "@/lib/data";
 import {Button} from "@/components/ui/button";
 import SearchStocks from "@/components/Search/SearchStocks";
+
 
 
 export default function HomeUser() {
@@ -31,14 +31,19 @@ export default function HomeUser() {
     
     
     return (
-        <div className="space-y-5"> 
-            <div className="font-bold text-2xl">Welcome, Nilson David Bello</div>
-            <HomePortfolioReview/>
-            <div>
-                <SearchStocks placeholder="Search stocks" handleSearchChange={handleSearchChange} onSearchSubmit={onSearchSubmit} search={search}/>
-                <SearchResultList searchResults={searchResult}/>
-                {serverError && <div>Unable to connect to API</div>}
+        <>
+            <div className="flex flex-col space-y-5">
+                <div className="font-bold text-2xl">Welcome, Nilson David Bello</div>
+                <HomePortfolioReview/>
+                <div>
+                    <SearchStocks placeholder="Search stocks" handleSearchChange={handleSearchChange}
+                                  onSearchSubmit={onSearchSubmit} search={search}/>
+                    <SearchResultList searchResults={searchResult}/>
+                    {serverError && <div>Unable to connect to API</div>}
+                </div>
+                
             </div>
-        </div>
+        </>
+
     )
 }

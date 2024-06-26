@@ -33,7 +33,7 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 await mutate(data);
-                Cookies.set('token', data.token, {expires: 7});
+                Cookies.set('token', data.token, {expires: 3});
                 router.push('/home');
             } else {
                 const errorData = await response.json();

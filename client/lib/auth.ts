@@ -1,5 +1,7 @@
 ﻿import useSWR from 'swr';
 import {UserProfileToken} from "@/models/User";
+import Cookies from "js-cookie";
+import {useRouter} from "next/navigation";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -12,4 +14,16 @@ export function useUser() {
         isError: !!error,
         mutate
     };
+}
+
+
+export function useLogout(){
+    
+    const router  = useRouter();
+    const logout = () => {
+        Cookies.remove('token');
+        router.push('/')
+    }
+    
+    return logout;
 }

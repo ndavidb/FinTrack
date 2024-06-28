@@ -34,7 +34,7 @@ const StockListSimple: React.FC<props> = ({className} : props) => {
                 </TableHeader>
                 <TableBody>
                     {stockData.map((stock) => (
-                        <TableRow>
+                        <TableRow key={stock.name}>
                             <TableCell className="flex content-center h-full">
                                 <Image
                                     src={`https://img.logo.dev/${stock.domain}?token=pk_H-H7gJdRR3qZgFO4dEkKtw`}

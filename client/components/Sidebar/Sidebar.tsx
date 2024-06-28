@@ -4,7 +4,6 @@ import Brand from "@/components/Brand/Brand";
 import Link from "next/link";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import React from "react";
-import {logout} from "@/lib/auth";
 
 interface FooterSidebarLinks {
     href: string,

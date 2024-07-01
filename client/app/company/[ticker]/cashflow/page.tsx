@@ -47,8 +47,8 @@ export default async function Page({params} : {params: {ticker: string}}) {
     const data = await getCompanyCashFlow(ticker);
     if (!data) return <div>Loading Cash Flow data...</div>
     return (
-        <div>
-            <h2 className="font-bold text-xl mb-3">Cash Flow Statement</h2>
+        <div className="bg-white">
+            <h2 className="font-bold text-xl mb-2 p-3">Cash Flow Statement</h2>
             <StatementTable config={config} data={data}/>
         </div>
     );

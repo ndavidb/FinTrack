@@ -68,8 +68,6 @@ public class StockService : IStockService
 
         stockModel.Symbol = updateDto.Symbol;
         stockModel.CompanyName = updateDto.CompanyName;
-        stockModel.Purchase = updateDto.Purchase;
-        stockModel.LastDiv = updateDto.LastDiv;
         stockModel.Industry = updateDto.Industry;
         stockModel.MarketCap = updateDto.MarketCap;
         

@@ -12,28 +12,30 @@ public class PortfolioService : IPortfolioService
 {
     private readonly ApplicationDbContext _context;
     private readonly IStockService _stockService;
-    public PortfolioService(ApplicationDbContext context, IStockService stockService)
+    private readonly IFmpService _fmpService;
+    public PortfolioService(ApplicationDbContext context, IStockService stockService, IFmpService fmpService)
     {
         _context = context;
         _stockService = stockService;
+        _fmpService = fmpService;
     }
 
 
     public async Task<List<Stock>> GetUserPortfolio(AppUser user)
     {
-        return await _context.Portfolios
+        var userPortfolio = await _context.Portfolios
             .Where(p => p.AppUserId == user.Id)
             .Select(stock => new Stock
             {
                 Id = stock.StockId,
                 Symbol = stock.Stock.Symbol,
                 CompanyName = stock.Stock.CompanyName,
-                Purchase = stock.Stock.Purchase,
-                LastDiv = stock.Stock.LastDiv,
                 Industry = stock.Stock.Industry,
                 MarketCap = stock.Stock.MarketCap
 
             }).ToListAsync();
+        
+        return userPortfolio;
     }
 
     public async Task<Portfolio> CreatePortfolioAsync(Portfolio portfolio)
@@ -42,6 +44,26 @@ public class PortfolioService : IPortfolioService
         await _context.SaveChangesAsync();
 
         return portfolio;
+    }
+
+    public async Task<Portfolio> AddToPortfolioAsync(AppUser user, string symbol)
+    {
+        var stock = await _stockService.GetStockBySymbolAsync(symbol);
+        var currentPrice = await _fmpService.GetCurrentPrice(symbol);
+        
+        var portfolio = new Portfolio()
+        {
+            AppUserId = user.Id,
+            StockId = stock.Id,
+            PurchasePrice = currentPrice,
+            PurchaseDate = DateTime.Now
+        };
+        
+        await _context.Portfolios.AddAsync(portfolio);
+        await _context.SaveChangesAsync();
+
+        return portfolio;
+
     }
 
     public async Task<bool> DeletePortfolioAsync(AppUser user, string symbol)

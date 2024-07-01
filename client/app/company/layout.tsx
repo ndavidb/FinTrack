@@ -9,7 +9,7 @@ const Layout = ({children}: {children: React.ReactNode}) => {
             <div className="w-full flex-none md:w-64">
                 <Sidebar sideBarTitle="Stocks Search"  footerSidebarLinks={sidebarFooterLinks} mainSidebarLinks={sidebarMainLinks}/>
             </div>
-            <div className="flex flex-col w-full h-full">
+            <div className="flex flex-col w-full h-full bg-blue-50">
                 <div className="p-8">
                     <CardWrapper ticker="AAPL"/>
                 </div>

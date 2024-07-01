@@ -12,10 +12,9 @@ public static class StockMappers
         {
             Symbol = stockModel.Symbol,
             CompanyName = stockModel.CompanyName,
-            Purchase = stockModel.Purchase,
-            LastDiv = stockModel.LastDiv,
             Industry = stockModel.Industry,
             MarketCap = stockModel.MarketCap,
+            Website = stockModel.Website,
             Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
         };
     }
@@ -26,10 +25,9 @@ public static class StockMappers
         {
             Symbol = stockRequestDto.Symbol,
             CompanyName = stockRequestDto.CompanyName,
-            Purchase = stockRequestDto.Purchase,
-            LastDiv = stockRequestDto.LastDiv,
             Industry = stockRequestDto.Industry,
             MarketCap = stockRequestDto.MarketCap,
+            Website = stockRequestDto.Website,
         };
     }
 
@@ -39,10 +37,9 @@ public static class StockMappers
         {
             Symbol = fmpStock.symbol,
             CompanyName = fmpStock.companyName,
-            Purchase = (decimal)fmpStock.price,
-            LastDiv = (decimal)fmpStock.lastDiv,
             Industry = fmpStock.industry,
-            MarketCap = fmpStock.mktCap
+            MarketCap = fmpStock.mktCap,
+            Website = fmpStock.website
         };
     }
 }

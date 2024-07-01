@@ -23,7 +23,7 @@ interface props {
 
 const StockListSimple: React.FC<props> = ({className} : props) => {
     return (
-        <div className={`bg-white p-5 ${className || ''}`}>
+        <div className={`w-full bg-white p-5 rounded-lg shadow-sm ${className || ''}`}>
             <CardTitle className="mb-4 text-xl font-semibold leading-none tracking-tight">My Stocks</CardTitle>
             <Table>
                 <TableHeader>

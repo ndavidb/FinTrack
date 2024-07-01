@@ -8,8 +8,8 @@ namespace api.Services;
 
 public class FmpService : IFmpService
 {
-    private HttpClient _httpClient;
-    private IConfiguration _config;
+    private readonly HttpClient _httpClient;
+    private readonly IConfiguration _config;
     public FmpService(HttpClient client, IConfiguration config)
     {
         _httpClient = client;
@@ -43,5 +43,20 @@ public class FmpService : IFmpService
             Console.WriteLine(e);
             return null;
         }
+    }
+
+    public async Task<decimal> GetCurrentPrice(string symbol)
+    {
+        var result =
+            await _httpClient.GetAsync(
+                $"https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey={_config["FMPKey"]}");
+        if (result.IsSuccessStatusCode)
+        {
+            var content = await result.Content.ReadAsStringAsync();
+            var task = JsonSerializer.Deserialize<FmpStock[]>(content);
+            return (decimal)task[0].price;
+        }
+
+        throw new Exception("Failed to fetch current price");
     }
 }

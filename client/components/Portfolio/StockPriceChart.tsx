@@ -16,7 +16,7 @@ interface Props {
 
 const StockPriceChart: React.FC<Props> = ({ className }) => {
     return (
-        <div className={`w-full bg-white px-5 py-4 rounded-lg shadow ${className || ''}`}>
+        <div className={`w-full bg-white p-5 rounded-lg shadow ${className || ''}`}>
             <h2 className="mb-4 text-xl font-semibold leading-none tracking-tight">General stocks performance</h2>
             <div className="h-[300px] md:h-[350px]">
                 <ResponsiveContainer width="100%" height="100%">

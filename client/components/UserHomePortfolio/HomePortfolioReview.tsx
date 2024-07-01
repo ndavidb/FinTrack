@@ -1,5 +1,6 @@
 ﻿import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
 interface Props {
 }
@@ -38,7 +39,9 @@ export default function HomePortfolioReview({}: Props) {
                 </div>
             </CardContent>
             <CardFooter>
-                <Button size={"sm"} className="text-sm font-medium">Review my portfolio</Button>
+                <Link  href="/portfolio">
+                    <Button size={"sm"} className="text-sm font-medium">Review my portfolio</Button>
+                </Link>
             </CardFooter>
         </Card>
     );

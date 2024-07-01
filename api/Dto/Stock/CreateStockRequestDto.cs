@@ -11,15 +11,12 @@ public class CreateStockRequestDto
     [MaxLength(20, ErrorMessage = "Company name cannot be over 20 characters")]
     public string CompanyName { get; set; } = string.Empty;
     [Required]
-    [Range(1, 100000000)]
-    public decimal Purchase { get; set; }
-    [Required]
-    [Range(0.1, 200)]
-    public decimal LastDiv { get; set; }
-    [Required]
     [MaxLength(20, ErrorMessage = "Industry cannot be over 20 characters")]
     public string Industry { get; set; } = string.Empty;
     [Required]
     [Range(1, 500000000000)]
     public long MarketCap { get; set; }
+    [Required]
+    [MaxLength(150, ErrorMessage = "Website cannot be over 150 characters")]
+    public string Website { get; set; } = string.Empty;
 }

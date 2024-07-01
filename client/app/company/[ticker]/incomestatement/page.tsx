@@ -66,8 +66,8 @@ export default async function Page({params}: Props) {
     const incomeStatementData = await getCompanyIncomeStatement(ticker);
     if (!incomeStatementData) return <div>Loading Income Statement data...</div>
     return (
-        <div>
-            <h2 className="font-bold text-xl mb-3">Cash Flow Statement</h2>
+        <div className="bg-white">
+            <h2 className="font-bold text-xl mb-3">Income Statement</h2>
             <StatementTable config={config} data={incomeStatementData}/>
         </div>
     );

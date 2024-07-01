@@ -101,6 +101,24 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await context.Database.MigrateAsync();
+        await Seed.SeedData(context, userManager, roleManager);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        throw;
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

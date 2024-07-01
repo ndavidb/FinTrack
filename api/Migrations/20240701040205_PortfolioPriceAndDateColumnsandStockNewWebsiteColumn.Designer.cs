@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Data;
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240701040205_PortfolioPriceAndDateColumnsandStockNewWebsiteColumn")]
+    partial class PortfolioPriceAndDateColumnsandStockNewWebsiteColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1883f035-9dfa-4ce5-bed0-f8624980676d",
+                            Id = "30d0286e-7dd9-49be-8951-f6deed51efc7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "aee9e384-4ac4-45da-9b0a-06578a6f7d71",
+                            Id = "3409ac0e-7a6c-4309-b50e-a668f3c45c7e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -274,9 +277,6 @@ namespace api.Migrations
                     b.Property<int>("StockId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -306,8 +306,14 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("LastDiv")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<long>("MarketCap")
                         .HasColumnType("bigint");
+
+                    b.Property<decimal>("Purchase")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Symbol")
                         .IsRequired()

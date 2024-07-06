@@ -46,26 +46,6 @@ public class PortfolioService : IPortfolioService
         return portfolio;
     }
 
-    public async Task<Portfolio> AddToPortfolioAsync(AppUser user, string symbol)
-    {
-        var stock = await _stockService.GetStockBySymbolAsync(symbol);
-        var currentPrice = await _fmpService.GetCurrentPrice(symbol);
-        
-        var portfolio = new Portfolio()
-        {
-            AppUserId = user.Id,
-            StockId = stock.Id,
-            PurchasePrice = currentPrice,
-            PurchaseDate = DateTime.Now
-        };
-        
-        await _context.Portfolios.AddAsync(portfolio);
-        await _context.SaveChangesAsync();
-
-        return portfolio;
-
-    }
-
     public async Task<bool> DeletePortfolioAsync(AppUser user, string symbol)
     {
         var portfolioModel = await _context.Portfolios

@@ -3,6 +3,7 @@ import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Table
 import Image from "next/image";
 import React from "react";
 import {CardTitle} from "@/components/ui/card";
+import {format} from "date-fns/format";
 
 interface props {
     className?: string;
@@ -17,7 +18,7 @@ const StockListSimple: React.FC<props> = ({className, portfolioData} : props) =>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[100px]">Stock</TableHead>
-                        <TableHead className="text-right">Status</TableHead>
+                        <TableHead className="text-right">Purchase date</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -37,7 +38,7 @@ const StockListSimple: React.FC<props> = ({className, portfolioData} : props) =>
                                 <p>{stock.symbol}</p>
                             </TableCell>
                             <TableCell className="text-right">
-                                <p>{stock.purchaseDate}</p>
+                                <p>{format(new Date(stock.purchaseDate), 'dd-MM-yyyy')}</p>
                             </TableCell>
                         </TableRow>
                     ))}

@@ -17,7 +17,7 @@ export default async function PortfolioPage() {
                 <StockPriceChart className="md:col-span-8 h-[400px]"/>
                 <StockListSimple className="md:col-span-4 h-[400px]" portfolioData={portfolioData}/>
             </div>
-            <PortfolioStocksTable />
+            <PortfolioStocksTable  portfolioData={portfolioData}/>
         </div>
     );
 }

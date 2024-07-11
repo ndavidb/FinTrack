@@ -54,7 +54,8 @@ public class FmpService : IFmpService
         {
             var content = await result.Content.ReadAsStringAsync();
             var task = JsonSerializer.Deserialize<FmpStock[]>(content);
-            return (decimal)task[0].price;
+            var stockPrice = (decimal)task[0].price; 
+            return stockPrice;
         }
 
         throw new Exception("Failed to fetch current price");

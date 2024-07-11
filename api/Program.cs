@@ -4,6 +4,8 @@ using api.Interfaces;
 using api.Models;
 using api.Repositories;
 using api.Services;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -85,12 +87,23 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UsePostgreSqlStorage(options =>
+    {
+        options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }));
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IFmpService, FmpService>();
+builder.Services.AddScoped<IStockPriceService, StockPriceService>();
 builder.Services.AddHttpClient<IFmpService, FmpService>();
 
 builder.Services.AddControllers()
@@ -100,6 +113,8 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
+
+app.UseHangfireDashboard();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -139,5 +154,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+RecurringJob.AddOrUpdate<IStockPriceService>(
+    "fetch-daily-stock-prices",
+    service => service.FetchDailyStockPrices(),
+    Cron.Daily(13, 35));
 
 app.Run();

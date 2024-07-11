@@ -14,8 +14,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import {format} from "date-fns/format";
 
-export default function PortfolioStocksTable() {
+interface Props {
+    portfolioData : StockPortfolio[];
+}
+
+export default function PortfolioStocksTable({portfolioData} : Props) {
     return (
         <Card>
             <CardHeader>
@@ -36,17 +41,18 @@ export default function PortfolioStocksTable() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow>
-                                <TableCell className="font-medium">Microsoft Corp - MSFT</TableCell>
-                                <TableCell>$250.00</TableCell>
-                                <TableCell className="hidden md:table-cell">$200.00</TableCell>
-                                <TableCell className="text-green-600">+25%</TableCell>
-                                <TableCell className="hidden md:table-cell">2023-06-23</TableCell>
-                                <TableCell className="hidden sm:table-cell">
-                                    <Badge variant="secondary">Active</Badge>
-                                </TableCell>
-                            </TableRow>
-                            {/* Add more rows as needed */}
+                            {portfolioData.map((stock) => (
+                                <TableRow key={stock.id}>
+                                    <TableCell className="font-medium">{stock.companyName}</TableCell>
+                                    <TableCell>{stock.purchasePrice}</TableCell>
+                                    <TableCell className="hidden md:table-cell">{stock.purchasePrice}</TableCell>
+                                    <TableCell className="text-green-600">+25%</TableCell>
+                                    <TableCell className="hidden md:table-cell">{format(new Date(stock.purchaseDate), 'dd-MM-yyyy')}</TableCell>
+                                    <TableCell className="hidden sm:table-cell">
+                                        <Badge variant="secondary">Active</Badge>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </div>

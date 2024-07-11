@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using api.Dto;
+using api.Dto.Stock;
 using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
@@ -35,7 +36,7 @@ public class PortfoliosController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<List<StockDto>>> GetUserPortfolio()
+    public async Task<ActionResult<List<StockPortfolioDto>>> GetUserPortfolio()
     {
         var username = User.GetUsername();
         var appUser = await _userManager.FindByNameAsync(username);
@@ -53,7 +54,7 @@ public class PortfoliosController : ControllerBase
         
         var stock = await _stockService.GetStockBySymbolAsync(symbol);
 
-        if (stock == null)
+        if (stock is null)
         {
             stock = await _fmpService.FindStockBySymbolAsync(symbol);
             
@@ -61,10 +62,7 @@ public class PortfoliosController : ControllerBase
             {
                 return BadRequest("Stock not found");
             }
-            else
-            {
-                await _stockService.CreateStockAsync(stock);
-            }
+            await _stockService.CreateStockAsync(stock);
         }
 
         var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);
@@ -74,13 +72,17 @@ public class PortfoliosController : ControllerBase
             return BadRequest("Stock already exists in portfolio");
         }
 
+        var currentPrice = await _fmpService.GetCurrentPrice(symbol);
+
         var newPortfolio = new Portfolio
         {
             StockId = stock.Id,
-            AppUserId = appUser.Id
+            AppUserId = appUser.Id,
+            PurchaseDate = DateTime.UtcNow,
+            PurchasePrice = currentPrice
         };
 
-        await _portfolioService.CreatePortfolioAsync(newPortfolio);
+        await _portfolioService.AddPortfolioAsync(newPortfolio);
 
         return Created();
 

@@ -1,5 +1,7 @@
 ﻿using api.Data;
 using api.Dto;
+using api.Dto.Stock;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -21,24 +23,26 @@ public class PortfolioService : IPortfolioService
     }
 
 
-    public async Task<List<Stock>> GetUserPortfolio(AppUser user)
+    public async Task<List<StockPortfolioDto>> GetUserPortfolio(AppUser user)
     {
         var userPortfolio = await _context.Portfolios
             .Where(p => p.AppUserId == user.Id)
-            .Select(stock => new Stock
+            .Select(portfolio => new StockPortfolioDto()
             {
-                Id = stock.StockId,
-                Symbol = stock.Stock.Symbol,
-                CompanyName = stock.Stock.CompanyName,
-                Industry = stock.Stock.Industry,
-                MarketCap = stock.Stock.MarketCap
+                Id = portfolio.Stock.Id,
+                Symbol = portfolio.Stock.Symbol,
+                CompanyName = portfolio.Stock.CompanyName,
+                Industry = portfolio.Stock.Industry,
+                Website = UrlManagement.CleanUrl(portfolio.Stock.Website),
+                PurchaseDate = portfolio.PurchaseDate,
+                PurchasePrice = portfolio.PurchasePrice
 
             }).ToListAsync();
         
         return userPortfolio;
     }
 
-    public async Task<Portfolio> CreatePortfolioAsync(Portfolio portfolio)
+    public async Task<Portfolio> AddPortfolioAsync(Portfolio portfolio)
     {
         await _context.Portfolios.AddAsync(portfolio);
         await _context.SaveChangesAsync();
@@ -51,7 +55,7 @@ public class PortfolioService : IPortfolioService
         var portfolioModel = await _context.Portfolios
             .FirstOrDefaultAsync(p =>
                 p.AppUserId == user.Id 
-                && p.Stock.Symbol.ToLower() == symbol.ToLower()
+                && string.Equals(p.Stock.Symbol, symbol)
             );
 
         if (portfolioModel == null)

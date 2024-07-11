@@ -14,9 +14,9 @@ export default function Navbar (){
     const [isClient, setIsClient] = useState(false);
     
     const menu = [
-        {name: "Features", path:""},
-        {name: "Pricing", path:"/#pricing"},
-        {name: "FAQs", path: "/#FAQS"},
+        {name: "Features", path:"#features"},
+        {name: "Pricing", path:"#pricing"},
+        {name: "FAQs", path: "#FAQS"},
     ]
     const cookies =  Cookies.get('token');
     

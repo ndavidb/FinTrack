@@ -1,36 +1,55 @@
 import {unstable_noStore as nonStore} from "next/cache";
-import {Inter} from "next/dist/compiled/@next/font/dist/google";
 
-export async function searchCompanies(query: string){
+
+export async function searchCompanies(query: string) {
     nonStore();
     try {
-        console.log(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        if (!response.ok){
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
             throw new Error("Request failed");
         }
-        
-        const data : CompanySearch[] = await response.json();
+
+        const data: CompanySearch[] = await response.json();
         return data;
-    } catch (error){
-        if (error instanceof Error){
-            console.error("Error message: ", error.message)
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("Error message: ", error.message);
         } else {
             console.error("Unexpected error: ", error);
-            return "Unexpected error occurred." 
         }
+        return "Unexpected error occurred.";
     }
 }
 
-export async function getCompanyKeyMetrics(query: string){
+export async function getCompanyProfile(query: string) {
     nonStore();
+    
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        
-        if (!response.ok){
-            throw new Error("Request failed")
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${query}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
+            throw new Error("Request failed");
         }
-        
+        const data: CompanyProfile[] = await response.json();
+        return data;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("Error message: ", error.message);
+        } else {
+            console.error("Unexpected error: ", error);
+        }
+        return undefined;
+    }
+}
+
+export async function getCompanyKeyMetrics(query: string) {
+    nonStore();
+    
+    try {
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
         const data: CompanyKeyMetrics[] = await response.json();
         return data;
     } catch (error: any) {
@@ -39,53 +58,86 @@ export async function getCompanyKeyMetrics(query: string){
     }
 }
 
-export async function getCompanyBalanceSheet(query: string){
+export async function getCompanyBalanceSheet(query: string) {
     nonStore();
+    
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        if (!response.ok){
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
             throw new Error("Request failed");
         }
-        
+
         const data: CompanyBalanceSheet[] = await response.json();
         return data;
-    } catch (error: any){
+    } catch (error: any) {
         console.error('Error fetching balance sheet:', error.message);
         return undefined;
     }
 }
 
-export async function getCompanyCashFlow(query: string){
+export async function getCompanyCashFlow(query: string) {
     nonStore();
+    
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`)
-        if (!response.ok){
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?limit=40&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
             throw new Error("Request failed");
         }
 
         const data: CompanyCashFlow[] = await response.json();
         return data;
-    } catch (error: any){
+    } catch (error: any) {
         console.error('Error fetching CashFlow data:', error.message);
         return undefined;
     }
 }
 
-export async function getCompanyIncomeStatement(query: string){
+export async function getCompanyIncomeStatement(query: string) {
     nonStore();
+    
     try {
-        const response = await fetch(
-            `https://financialmodelingprep.com/api/v3/income-statement/${query}?limit=50&apikey=${process.env.NEXT_PUBLIC_API_KEY}`
-        )
-        if (!response.ok){
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/income-statement/${query}?limit=50&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        if (!response.ok) {
             throw new Error("Request failed");
         }
 
         const data: CompanyIncomeStatement[] = await response.json();
         return data;
-    } catch (error: any){
+    } catch (error: any) {
         console.error('Error fetching CashFlow data:', error.message);
         return undefined;
     }
 }
 
+export async function getStocksPortfolio() : Promise<StockPortfolio[]> {
+    nonStore();
+    
+    const {cookies} = await import('next/headers');
+    const cookieManager = cookies();
+    
+    const token = cookieManager.get('token')?.value;
+    try {
+        const response = await fetch('http://localhost:5254/Portfolios/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data.$values)) {
+            console.error('Received non-array data:', data);
+            throw new Error('Invalid data format received from server');
+        }
+
+        return data.$values as StockPortfolio[];
+    } catch (error: any) {
+        console.error('Error fetching portfolio:', error.message);
+        throw error;
+    }
+}

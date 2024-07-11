@@ -29,7 +29,6 @@ export default function HomeUser() {
         }
     }
     
-    
     return (
         <>
             <div className="flex flex-col space-y-5">

@@ -1,29 +1,17 @@
-﻿import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+﻿'use client';
+import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import Image from "next/image";
 import React from "react";
 import {CardTitle} from "@/components/ui/card";
 
-interface StockData {
-    name: string;
-    domain: string;
-    totalShare: number;
-    totalReturn: number;
-}
-
-const stockData: StockData[] = [
-    { name: 'Meta', domain: 'www.meta.com', totalShare: 157.36, totalReturn: -0.1 },
-    { name: 'Google', domain: 'www.google.com', totalShare: 743.76, totalReturn: 0.98 },
-    { name: 'Tesla', domain: 'www.tesla.com', totalShare: 234.09, totalReturn: -1.1 },
-    { name: 'Microsoft', domain: 'www.microsoft.com', totalShare: 410.5, totalReturn: -2.9 },
-];
-
 interface props {
     className?: string;
+    portfolioData: StockPortfolio[];
 }
 
-const StockListSimple: React.FC<props> = ({className} : props) => {
+const StockListSimple: React.FC<props> = ({className, portfolioData} : props) => {
     return (
-        <div className={`w-full bg-white p-5 rounded-lg shadow-sm ${className || ''}`}>
+        <div className={`h-full w-full bg-white p-5 rounded-lg shadow-sm ${className || ''}`}>
             <CardTitle className="mb-4 text-xl font-semibold leading-none tracking-tight">My Stocks</CardTitle>
             <Table>
                 <TableHeader>
@@ -33,26 +21,24 @@ const StockListSimple: React.FC<props> = ({className} : props) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {stockData.map((stock) => (
-                        <TableRow key={stock.name}>
+                    {portfolioData.map((stock) => (
+                        <TableRow key={stock.id}>
                             <TableCell className="flex content-center h-full">
                                 <Image
-                                    src={`https://img.logo.dev/${stock.domain}?token=pk_H-H7gJdRR3qZgFO4dEkKtw`}
-                                    alt={`${stock.name} logo`}
+                                    src={`https://img.logo.dev/${stock.website}?token=pk_H-H7gJdRR3qZgFO4dEkKtw`}
+                                    alt={`${stock.companyName} logo`}
                                     width={24}
                                     height={24}
                                     className="mr-2"
                                     onError={(e) => {
-                                        (e.target as HTMLImageElement).src = `/api/placeholder/24/24?text=${stock.name[0]}`;
+                                        (e.target as HTMLImageElement).src = `/api/placeholder/24/24?text=${stock.companyName[0]}`;
                                     }}
                                 />
-                                <p>{stock.name}</p>
+                                <p>{stock.symbol}</p>
                             </TableCell>
                             <TableCell className="text-right">
-                                <p>{stock.name}</p>
-                                <p>{stock.name}</p>
+                                <p>{stock.purchaseDate}</p>
                             </TableCell>
-
                         </TableRow>
                     ))}
                 </TableBody>

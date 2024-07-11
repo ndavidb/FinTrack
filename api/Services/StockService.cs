@@ -7,6 +7,7 @@ using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace api.Repositories;
 
@@ -55,7 +56,7 @@ public class StockService : IStockService
 
     public async Task<Stock?> GetStockBySymbolAsync(string symbol)
     {
-        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol == symbol);
+        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol.ToLower() == symbol);
 
         return stock;
     }
@@ -81,7 +82,6 @@ public class StockService : IStockService
         await _context.Stocks.AddAsync(stockModel);
         await _context.SaveChangesAsync();
         return stockModel.ToStockDto();
-
     }
 
     public async Task<StockDto?> DeleteStockAsync(int id)
@@ -107,3 +107,4 @@ public class StockService : IStockService
         return await _context.Stocks.AnyAsync(s => s.Symbol.ToLower() == symbol.ToLower());
     }
 }
+

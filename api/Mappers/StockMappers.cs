@@ -42,4 +42,15 @@ public static class StockMappers
             Website = fmpStock.website
         };
     }
+
+    public static StockPortfolioDto ToStockPortfolioDto(this Stock stockModel)
+    {
+        return new StockPortfolioDto
+        {
+            Symbol = stockModel.Symbol,
+            CompanyName = stockModel.CompanyName,
+            Industry = stockModel.Industry,
+            Website = stockModel.Website
+        };
+    }
 }

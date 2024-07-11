@@ -9,6 +9,9 @@ export function middleware(request: NextRequest) {
     if (pathname.includes('/home') && !token) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
+    if (pathname.includes('/portfolio') && !token) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
 
     if (pathname === '/login' && token) {
         return NextResponse.redirect(new URL('/home', request.url))
@@ -22,7 +25,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/home', '/login', '/register']
+    matcher: ['/home', '/login', '/register', '/portfolio']
 }
 
 

@@ -342,4 +342,14 @@ declare global {
         link: string;
         finalLink: string;
     }
+
+    export interface StockPortfolio {
+        id: number;
+        symbol: string;
+        companyName: string;
+        industry: string;
+        website: string;
+        purchaseDate: string;
+        purchasePrice: number;
+    }
 }

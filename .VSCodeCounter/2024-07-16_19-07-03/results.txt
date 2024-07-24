@@ -1,0 +1,262 @@
+Date : 2024-07-16 19:07:03
+Directory : /Users/nilson/Desktop/FinTrack
+Total : 161 files,  23893 codes, 108 comments, 1743 blanks, all 25744 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |         17 |     13,578 |          0 |          7 |     13,585 |
+| TypeScript JSX     |         54 |      4,783 |          2 |        336 |      5,121 |
+| C#                 |         59 |      4,629 |         58 |      1,281 |      5,968 |
+| TypeScript         |          8 |        646 |         23 |         81 |        750 |
+| XML                |         13 |        140 |          0 |          4 |        144 |
+| JSON with Comments |          2 |         29 |          0 |          2 |         31 |
+| Markdown           |          2 |         25 |          0 |         15 |         40 |
+| Properties         |          2 |         20 |          0 |          1 |         21 |
+| JavaScript         |          2 |         20 |          2 |          4 |         26 |
+| CSS                |          1 |         19 |          4 |          5 |         28 |
+| YAML               |          1 |          4 |         19 |          7 |         30 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                     | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                        |        161 |     23,893 |        108 |      1,743 |     25,744 |
+| . (Files)                                                                                                                                |          2 |          6 |         19 |          8 |         33 |
+| .idea                                                                                                                                    |          4 |         35 |          0 |          0 |         35 |
+| .idea/.idea.FinTrack                                                                                                                     |          4 |         35 |          0 |          0 |         35 |
+| .idea/.idea.FinTrack/.idea                                                                                                               |          4 |         35 |          0 |          0 |         35 |
+| api                                                                                                                                      |         81 |     11,414 |         58 |      1,291 |     12,763 |
+| api (Files)                                                                                                                              |          4 |        199 |          2 |         27 |        228 |
+| api/Controllers                                                                                                                          |          4 |        332 |          0 |         77 |        409 |
+| api/Data                                                                                                                                 |          1 |         44 |          0 |         10 |         54 |
+| api/Dto                                                                                                                                  |         12 |        177 |          0 |         19 |        196 |
+| api/Dto/Account                                                                                                                          |          3 |         28 |          0 |          5 |         33 |
+| api/Dto/Comment                                                                                                                          |          3 |         36 |          0 |          5 |         41 |
+| api/Dto/Stock                                                                                                                            |          6 |        113 |          0 |          9 |        122 |
+| api/Extensions                                                                                                                           |          1 |          9 |          0 |          2 |         11 |
+| api/Helpers                                                                                                                              |          2 |         22 |          0 |          6 |         28 |
+| api/Interfaces                                                                                                                           |          6 |         57 |          0 |         11 |         68 |
+| api/Mappers                                                                                                                              |          2 |         87 |          0 |          8 |         95 |
+| api/Migrations                                                                                                                           |         15 |      3,298 |         36 |      1,027 |      4,361 |
+| api/Models                                                                                                                               |          5 |         55 |          0 |         12 |         67 |
+| api/Properties                                                                                                                           |          1 |         41 |          0 |          1 |         42 |
+| api/Services                                                                                                                             |          6 |        376 |          0 |         75 |        451 |
+| api/bin                                                                                                                                  |          5 |      1,381 |          0 |          2 |      1,383 |
+| api/bin/Debug                                                                                                                            |          5 |      1,381 |          0 |          2 |      1,383 |
+| api/bin/Debug/net8.0                                                                                                                     |          5 |      1,381 |          0 |          2 |      1,383 |
+| api/obj                                                                                                                                  |         17 |      5,336 |         20 |         14 |      5,370 |
+| api/obj (Files)                                                                                                                          |          6 |      4,120 |          0 |          1 |      4,121 |
+| api/obj/Debug                                                                                                                            |         11 |      1,216 |         20 |         13 |      1,249 |
+| api/obj/Debug/net8.0                                                                                                                     |         11 |      1,216 |         20 |         13 |      1,249 |
+| api/obj/Debug/net8.0 (Files)                                                                                                             |          8 |      1,207 |         20 |         13 |      1,240 |
+| api/obj/Debug/net8.0/staticwebassets                                                                                                     |          3 |          9 |          0 |          0 |          9 |
+| client                                                                                                                                   |         74 |     12,438 |         31 |        444 |     12,913 |
+| client (Files)                                                                                                                           |         11 |      7,047 |          2 |         35 |      7,084 |
+| client/actions                                                                                                                           |          1 |         57 |          0 |         11 |         68 |
+| client/app                                                                                                                               |         14 |        664 |          0 |         55 |        719 |
+| client/app (Files)                                                                                                                       |          2 |         51 |          0 |          5 |         56 |
+| client/app/company                                                                                                                       |          5 |        297 |          0 |         23 |        320 |
+| client/app/company/[ticker]                                                                                                              |          5 |        297 |          0 |         23 |        320 |
+| client/app/company/[ticker] (Files)                                                                                                      |          1 |         22 |          0 |          3 |         25 |
+| client/app/company/[ticker]/balancesheet                                                                                                 |          1 |         71 |          0 |          5 |         76 |
+| client/app/company/[ticker]/cashflow                                                                                                     |          1 |         52 |          0 |          4 |         56 |
+| client/app/company/[ticker]/incomestatement                                                                                              |          1 |         71 |          0 |          4 |         75 |
+| client/app/company/[ticker]/profile                                                                                                      |          1 |         81 |          0 |          7 |         88 |
+| client/app/home                                                                                                                          |          2 |         33 |          0 |          7 |         40 |
+| client/app/login                                                                                                                         |          2 |        139 |          0 |          9 |        148 |
+| client/app/portfolio                                                                                                                     |          2 |         35 |          0 |          5 |         40 |
+| client/app/register                                                                                                                      |          1 |        109 |          0 |          6 |        115 |
+| client/components                                                                                                                        |         40 |      4,119 |          2 |        281 |      4,402 |
+| client/components (Files)                                                                                                                |          1 |         15 |          0 |          1 |         16 |
+| client/components/Brand                                                                                                                  |          1 |         12 |          0 |          1 |         13 |
+| client/components/CardDashboard                                                                                                          |          1 |         40 |          0 |          7 |         47 |
+| client/components/FAQs                                                                                                                   |          1 |         59 |          0 |          2 |         61 |
+| client/components/Footer                                                                                                                 |          1 |         53 |          0 |          3 |         56 |
+| client/components/Hero                                                                                                                   |          1 |         30 |          0 |          1 |         31 |
+| client/components/Portfolio                                                                                                              |          5 |        315 |          0 |         32 |        347 |
+| client/components/Pricing                                                                                                                |          1 |        132 |          0 |          4 |        136 |
+| client/components/Search                                                                                                                 |          5 |        157 |          0 |         21 |        178 |
+| client/components/Sidebar                                                                                                                |          2 |        135 |          0 |          7 |        142 |
+| client/components/StatementTable                                                                                                         |          2 |      1,637 |          0 |          6 |      1,643 |
+| client/components/UserHomePortfolio                                                                                                      |          1 |         36 |          0 |          3 |         39 |
+| client/components/UserNavbar                                                                                                             |          1 |         26 |          0 |          5 |         31 |
+| client/components/navbar                                                                                                                 |          2 |         98 |          0 |         14 |        112 |
+| client/components/ui                                                                                                                     |         15 |      1,374 |          2 |        174 |      1,550 |
+| client/components/ui (Files)                                                                                                             |         14 |      1,374 |          2 |        172 |      1,548 |
+| client/components/ui/icons                                                                                                               |          1 |          0 |          0 |          2 |          2 |
+| client/lib                                                                                                                               |          4 |        525 |         23 |         57 |        605 |
+| client/models                                                                                                                            |          1 |          5 |          0 |          0 |          5 |
+| client/public                                                                                                                            |          2 |          2 |          0 |          0 |          2 |
+| client/styles                                                                                                                            |          1 |         19 |          4 |          5 |         28 |
++------------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                                                 | language           | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/nilson/Desktop/FinTrack/.idea/.idea.FinTrack/.idea/dataSources.xml                                                                | XML                |         12 |          0 |          0 |         12 |
+| /Users/nilson/Desktop/FinTrack/.idea/.idea.FinTrack/.idea/encodings.xml                                                                  | XML                |          4 |          0 |          0 |          4 |
+| /Users/nilson/Desktop/FinTrack/.idea/.idea.FinTrack/.idea/indexLayout.xml                                                                | XML                |         13 |          0 |          0 |         13 |
+| /Users/nilson/Desktop/FinTrack/.idea/.idea.FinTrack/.idea/vcs.xml                                                                        | XML                |          6 |          0 |          0 |          6 |
+| /Users/nilson/Desktop/FinTrack/README.md                                                                                                 | Markdown           |          2 |          0 |          1 |          3 |
+| /Users/nilson/Desktop/FinTrack/api/Controllers/AccountsController.cs                                                                     | C#                 |         84 |          0 |         14 |         98 |
+| /Users/nilson/Desktop/FinTrack/api/Controllers/CommentsController.cs                                                                     | C#                 |         90 |          0 |         19 |        109 |
+| /Users/nilson/Desktop/FinTrack/api/Controllers/PortfoliosController.cs                                                                   | C#                 |         98 |          0 |         22 |        120 |
+| /Users/nilson/Desktop/FinTrack/api/Controllers/StocksController.cs                                                                       | C#                 |         60 |          0 |         22 |         82 |
+| /Users/nilson/Desktop/FinTrack/api/Data/ApplicationDbContext.cs                                                                          | C#                 |         44 |          0 |         10 |         54 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Account/LoginDto.cs                                                                               | C#                 |          9 |          0 |          2 |         11 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Account/NewUserDto.cs                                                                             | C#                 |          7 |          0 |          1 |          8 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Account/RegisterDto.cs                                                                            | C#                 |         12 |          0 |          2 |         14 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Comment/CommentDto.cs                                                                             | C#                 |         10 |          0 |          1 |         11 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Comment/CreateCommentDtoRequest.cs                                                                | C#                 |         13 |          0 |          2 |         15 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Comment/UpdateCommentRequestDto.cs                                                                | C#                 |         13 |          0 |          2 |         15 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/CreateStockRequestDto.cs                                                                    | C#                 |         20 |          0 |          2 |         22 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/FmpStock.cs                                                                                 | C#                 |         40 |          0 |          1 |         41 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/StockDto.cs                                                                                 | C#                 |         11 |          0 |          2 |         13 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/StockPerformanceDto.cs                                                                      | C#                 |         11 |          0 |          1 |         12 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/StockPortfolioDto.cs                                                                        | C#                 |         11 |          0 |          1 |         12 |
+| /Users/nilson/Desktop/FinTrack/api/Dto/Stock/UpdateStockRequestDto.cs                                                                    | C#                 |         20 |          0 |          2 |         22 |
+| /Users/nilson/Desktop/FinTrack/api/Extensions/ClaimsExtensions.cs                                                                        | C#                 |          9 |          0 |          2 |         11 |
+| /Users/nilson/Desktop/FinTrack/api/Helpers/QueryObject.cs                                                                                | C#                 |          9 |          0 |          2 |         11 |
+| /Users/nilson/Desktop/FinTrack/api/Helpers/UrlManagement.cs                                                                              | C#                 |         13 |          0 |          4 |         17 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/ICommentService.cs                                                                         | C#                 |         11 |          0 |          2 |         13 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/IFmpService.cs                                                                             | C#                 |          7 |          0 |          2 |          9 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/IPortfolioService.cs                                                                       | C#                 |         12 |          0 |          2 |         14 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/IStockPriceService.cs                                                                      | C#                 |          5 |          0 |          1 |          6 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/IStockService.cs                                                                           | C#                 |         16 |          0 |          2 |         18 |
+| /Users/nilson/Desktop/FinTrack/api/Interfaces/ITokenService.cs                                                                           | C#                 |          6 |          0 |          2 |          8 |
+| /Users/nilson/Desktop/FinTrack/api/Mappers/CommentMapper.cs                                                                              | C#                 |         36 |          0 |          3 |         39 |
+| /Users/nilson/Desktop/FinTrack/api/Mappers/StockMappers.cs                                                                               | C#                 |         51 |          0 |          5 |         56 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240618034412_UpToDateofDB.Designer.cs                                                    | C#                 |        311 |          2 |        108 |        421 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240618034412_UpToDateofDB.cs                                                             | C#                 |        291 |          3 |         34 |        328 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240701040205_PortfolioPriceAndDateColumnsandStockNewWebsiteColumn.Designer.cs            | C#                 |        318 |          2 |        111 |        431 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240701040205_PortfolioPriceAndDateColumnsandStockNewWebsiteColumn.cs                     | C#                 |         75 |          3 |         15 |         93 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240701055245_ModifyPortfolioTable_ModifyStockTableRemovingPurchaseAndLastDiv.Designer.cs | C#                 |        316 |          2 |        110 |        428 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240701055245_ModifyPortfolioTable_ModifyStockTableRemovingPurchaseAndLastDiv.cs          | C#                 |         74 |          3 |         15 |         92 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240704032359_AddSStockPriceTable.Designer.cs                                             | C#                 |        316 |          2 |        110 |        428 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240704032359_AddSStockPriceTable.cs                                                      | C#                 |         47 |          3 |          9 |         59 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240704032604_AddSStockPriceTableUpdate.Designer.cs                                       | C#                 |        344 |          2 |        121 |        467 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240704032604_AddSStockPriceTableUpdate.cs                                                | C#                 |         76 |          3 |         12 |         91 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240706041254_ResetAndRessedDatabase.Designer.cs                                          | C#                 |        344 |          2 |        121 |        467 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240706041254_ResetAndRessedDatabase.cs                                                   | C#                 |         53 |          3 |         10 |         66 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240707034205_PortfolioModelCheck.Designer.cs                                             | C#                 |        344 |          2 |        121 |        467 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/20240707034205_PortfolioModelCheck.cs                                                      | C#                 |         47 |          3 |          9 |         59 |
+| /Users/nilson/Desktop/FinTrack/api/Migrations/ApplicationDbContextModelSnapshot.cs                                                       | C#                 |        342 |          1 |        121 |        464 |
+| /Users/nilson/Desktop/FinTrack/api/Models/AppUser.cs                                                                                     | C#                 |          6 |          0 |          2 |          8 |
+| /Users/nilson/Desktop/FinTrack/api/Models/Comment.cs                                                                                     | C#                 |         12 |          0 |          4 |         16 |
+| /Users/nilson/Desktop/FinTrack/api/Models/Portfolio.cs                                                                                   | C#                 |         11 |          0 |          1 |         12 |
+| /Users/nilson/Desktop/FinTrack/api/Models/Stock.cs                                                                                       | C#                 |         16 |          0 |          3 |         19 |
+| /Users/nilson/Desktop/FinTrack/api/Models/StockPrice.cs                                                                                  | C#                 |         10 |          0 |          2 |         12 |
+| /Users/nilson/Desktop/FinTrack/api/Program.cs                                                                                            | C#                 |        138 |          2 |         22 |        162 |
+| /Users/nilson/Desktop/FinTrack/api/Properties/launchSettings.json                                                                        | JSON               |         41 |          0 |          1 |         42 |
+| /Users/nilson/Desktop/FinTrack/api/Services/CommentService.cs                                                                            | C#                 |         58 |          0 |         16 |         74 |
+| /Users/nilson/Desktop/FinTrack/api/Services/FmpService.cs                                                                                | C#                 |         55 |          0 |          8 |         63 |
+| /Users/nilson/Desktop/FinTrack/api/Services/PortfolioService.cs                                                                          | C#                 |         88 |          0 |         14 |        102 |
+| /Users/nilson/Desktop/FinTrack/api/Services/StockPriceService.cs                                                                         | C#                 |         51 |          0 |          4 |         55 |
+| /Users/nilson/Desktop/FinTrack/api/Services/StockService.cs                                                                              | C#                 |         86 |          0 |         25 |        111 |
+| /Users/nilson/Desktop/FinTrack/api/Services/TokenService.cs                                                                              | C#                 |         38 |          0 |          8 |         46 |
+| /Users/nilson/Desktop/FinTrack/api/api.csproj                                                                                            | XML                |         29 |          0 |          3 |         32 |
+| /Users/nilson/Desktop/FinTrack/api/appsettings.Development.json                                                                          | JSON               |         13 |          0 |          1 |         14 |
+| /Users/nilson/Desktop/FinTrack/api/appsettings.json                                                                                      | JSON               |         19 |          0 |          1 |         20 |
+| /Users/nilson/Desktop/FinTrack/api/bin/Debug/net8.0/api.deps.json                                                                        | JSON               |      1,328 |          0 |          0 |      1,328 |
+| /Users/nilson/Desktop/FinTrack/api/bin/Debug/net8.0/api.runtimeconfig.json                                                               | JSON               |         20 |          0 |          0 |         20 |
+| /Users/nilson/Desktop/FinTrack/api/bin/Debug/net8.0/api.staticwebassets.runtime.json                                                     | JSON               |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/api/bin/Debug/net8.0/appsettings.Development.json                                                         | JSON               |         13 |          0 |          1 |         14 |
+| /Users/nilson/Desktop/FinTrack/api/bin/Debug/net8.0/appsettings.json                                                                     | JSON               |         19 |          0 |          1 |         20 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs                                       | C#                 |          3 |          1 |          1 |          5 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/api.AssemblyInfo.cs                                                                  | C#                 |         10 |          9 |          5 |         24 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig                                        | Properties         |         19 |          0 |          1 |         20 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/api.GlobalUsings.g.cs                                                                | C#                 |         16 |          1 |          1 |         18 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/api.MvcApplicationPartsAssemblyInfo.cs                                               | C#                 |          5 |          9 |          5 |         19 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/api.sourcelink.json                                                                  | JSON               |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/staticwebassets.build.json                                                           | JSON               |      1,152 |          0 |          0 |      1,152 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/staticwebassets.development.json                                                     | JSON               |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/staticwebassets/msbuild.build.api.props                                              | XML                |          3 |          0 |          0 |          3 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.api.props                                | XML                |          3 |          0 |          0 |          3 |
+| /Users/nilson/Desktop/FinTrack/api/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.api.props                                    | XML                |          3 |          0 |          0 |          3 |
+| /Users/nilson/Desktop/FinTrack/api/obj/api.csproj.EntityFrameworkCore.targets                                                            | XML                |         28 |          0 |          1 |         29 |
+| /Users/nilson/Desktop/FinTrack/api/obj/api.csproj.nuget.dgspec.json                                                                      | JSON               |        114 |          0 |          0 |        114 |
+| /Users/nilson/Desktop/FinTrack/api/obj/api.csproj.nuget.g.props                                                                          | XML                |         27 |          0 |          0 |         27 |
+| /Users/nilson/Desktop/FinTrack/api/obj/api.csproj.nuget.g.targets                                                                        | XML                |         10 |          0 |          0 |         10 |
+| /Users/nilson/Desktop/FinTrack/api/obj/project.assets.json                                                                               | JSON               |      3,940 |          0 |          0 |      3,940 |
+| /Users/nilson/Desktop/FinTrack/api/obj/project.packagespec.json                                                                          | JSON               |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/client/.env                                                                                               | Properties         |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/client/.eslintrc.json                                                                                     | JSON with Comments |          3 |          0 |          1 |          4 |
+| /Users/nilson/Desktop/FinTrack/client/README.md                                                                                          | Markdown           |         23 |          0 |         14 |         37 |
+| /Users/nilson/Desktop/FinTrack/client/actions/portfolioActions.ts                                                                        | TypeScript         |         57 |          0 |         11 |         68 |
+| /Users/nilson/Desktop/FinTrack/client/app/company/[ticker]/balancesheet/page.tsx                                                         | TypeScript JSX     |         71 |          0 |          5 |         76 |
+| /Users/nilson/Desktop/FinTrack/client/app/company/[ticker]/cashflow/page.tsx                                                             | TypeScript JSX     |         52 |          0 |          4 |         56 |
+| /Users/nilson/Desktop/FinTrack/client/app/company/[ticker]/incomestatement/page.tsx                                                      | TypeScript JSX     |         71 |          0 |          4 |         75 |
+| /Users/nilson/Desktop/FinTrack/client/app/company/[ticker]/layout.tsx                                                                    | TypeScript JSX     |         22 |          0 |          3 |         25 |
+| /Users/nilson/Desktop/FinTrack/client/app/company/[ticker]/profile/page.tsx                                                              | TypeScript JSX     |         81 |          0 |          7 |         88 |
+| /Users/nilson/Desktop/FinTrack/client/app/home/layout.tsx                                                                                | TypeScript JSX     |         19 |          0 |          3 |         22 |
+| /Users/nilson/Desktop/FinTrack/client/app/home/page.tsx                                                                                  | TypeScript JSX     |         14 |          0 |          4 |         18 |
+| /Users/nilson/Desktop/FinTrack/client/app/layout.tsx                                                                                     | TypeScript JSX     |         30 |          0 |          3 |         33 |
+| /Users/nilson/Desktop/FinTrack/client/app/login/layout.tsx                                                                               | TypeScript JSX     |         11 |          0 |          2 |         13 |
+| /Users/nilson/Desktop/FinTrack/client/app/login/page.tsx                                                                                 | TypeScript JSX     |        128 |          0 |          7 |        135 |
+| /Users/nilson/Desktop/FinTrack/client/app/page.tsx                                                                                       | TypeScript JSX     |         21 |          0 |          2 |         23 |
+| /Users/nilson/Desktop/FinTrack/client/app/portfolio/layout.tsx                                                                           | TypeScript JSX     |         15 |          0 |          2 |         17 |
+| /Users/nilson/Desktop/FinTrack/client/app/portfolio/page.tsx                                                                             | TypeScript JSX     |         20 |          0 |          3 |         23 |
+| /Users/nilson/Desktop/FinTrack/client/app/register/page.tsx                                                                              | TypeScript JSX     |        109 |          0 |          6 |        115 |
+| /Users/nilson/Desktop/FinTrack/client/components.json                                                                                    | JSON               |         17 |          0 |          0 |         17 |
+| /Users/nilson/Desktop/FinTrack/client/components/Brand/Brand.tsx                                                                         | TypeScript JSX     |         12 |          0 |          1 |         13 |
+| /Users/nilson/Desktop/FinTrack/client/components/CardDashboard/CardDashboard.tsx                                                         | TypeScript JSX     |         40 |          0 |          7 |         47 |
+| /Users/nilson/Desktop/FinTrack/client/components/FAQs/FAQs.tsx                                                                           | TypeScript JSX     |         59 |          0 |          2 |         61 |
+| /Users/nilson/Desktop/FinTrack/client/components/Footer/Footer.tsx                                                                       | TypeScript JSX     |         53 |          0 |          3 |         56 |
+| /Users/nilson/Desktop/FinTrack/client/components/Hero/Hero.tsx                                                                           | TypeScript JSX     |         30 |          0 |          1 |         31 |
+| /Users/nilson/Desktop/FinTrack/client/components/Portfolio/PortfolioStockCard.tsx                                                        | TypeScript JSX     |         40 |          0 |          3 |         43 |
+| /Users/nilson/Desktop/FinTrack/client/components/Portfolio/PortfolioStocksTable.tsx                                                      | TypeScript JSX     |         93 |          0 |          6 |         99 |
+| /Users/nilson/Desktop/FinTrack/client/components/Portfolio/PortfolioStocksWrapper.tsx                                                    | TypeScript JSX     |         50 |          0 |         10 |         60 |
+| /Users/nilson/Desktop/FinTrack/client/components/Portfolio/StockListSimple.tsx                                                           | TypeScript JSX     |         54 |          0 |          3 |         57 |
+| /Users/nilson/Desktop/FinTrack/client/components/Portfolio/StockPriceChart.tsx                                                           | TypeScript JSX     |         78 |          0 |         10 |         88 |
+| /Users/nilson/Desktop/FinTrack/client/components/Pricing/PricingSection.tsx                                                              | TypeScript JSX     |        132 |          0 |          4 |        136 |
+| /Users/nilson/Desktop/FinTrack/client/components/Search/SearchCard.tsx                                                                   | TypeScript JSX     |         49 |          0 |          5 |         54 |
+| /Users/nilson/Desktop/FinTrack/client/components/Search/SearchResultList.tsx                                                             | TypeScript JSX     |         21 |          0 |          4 |         25 |
+| /Users/nilson/Desktop/FinTrack/client/components/Search/SearchStocks.tsx                                                                 | TypeScript JSX     |         27 |          0 |          3 |         30 |
+| /Users/nilson/Desktop/FinTrack/client/components/Search/SearchWrapper.tsx                                                                | TypeScript JSX     |         30 |          0 |          5 |         35 |
+| /Users/nilson/Desktop/FinTrack/client/components/Search/Searchbar.tsx                                                                    | TypeScript JSX     |         30 |          0 |          4 |         34 |
+| /Users/nilson/Desktop/FinTrack/client/components/Sidebar/Sidebar.tsx                                                                     | TypeScript JSX     |         82 |          0 |          6 |         88 |
+| /Users/nilson/Desktop/FinTrack/client/components/Sidebar/SidebarLinks.tsx                                                                | TypeScript JSX     |         53 |          0 |          1 |         54 |
+| /Users/nilson/Desktop/FinTrack/client/components/StatementTable/TestData.tsx                                                             | TypeScript JSX     |      1,592 |          0 |          1 |      1,593 |
+| /Users/nilson/Desktop/FinTrack/client/components/StatementTable/statementTable.tsx                                                       | TypeScript JSX     |         45 |          0 |          5 |         50 |
+| /Users/nilson/Desktop/FinTrack/client/components/ToastProvider.tsx                                                                       | TypeScript JSX     |         15 |          0 |          1 |         16 |
+| /Users/nilson/Desktop/FinTrack/client/components/UserHomePortfolio/HomePortfolioReview.tsx                                               | TypeScript JSX     |         36 |          0 |          3 |         39 |
+| /Users/nilson/Desktop/FinTrack/client/components/UserNavbar/UserNavbar.tsx                                                               | TypeScript JSX     |         26 |          0 |          5 |         31 |
+| /Users/nilson/Desktop/FinTrack/client/components/navbar/NavHeader.tsx                                                                    | TypeScript JSX     |         34 |          0 |          5 |         39 |
+| /Users/nilson/Desktop/FinTrack/client/components/navbar/Navbar.tsx                                                                       | TypeScript JSX     |         64 |          0 |          9 |         73 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/avatar.tsx                                                                           | TypeScript JSX     |         44 |          0 |          7 |         51 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/badge.tsx                                                                            | TypeScript JSX     |         31 |          0 |          6 |         37 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/button.tsx                                                                           | TypeScript JSX     |         51 |          0 |          6 |         57 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/card.tsx                                                                             | TypeScript JSX     |         71 |          0 |          9 |         80 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/carousel.tsx                                                                         | TypeScript JSX     |        232 |          0 |         31 |        263 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/chart.tsx                                                                            | TypeScript JSX     |        327 |          2 |         37 |        366 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/dropdown-menu.tsx                                                                    | TypeScript JSX     |        182 |          0 |         19 |        201 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/icons/icons.tsx                                                                      | TypeScript JSX     |          0 |          0 |          2 |          2 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/input.tsx                                                                            | TypeScript JSX     |         21 |          0 |          5 |         26 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/label.tsx                                                                            | TypeScript JSX     |         21 |          0 |          6 |         27 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/pagination.tsx                                                                       | TypeScript JSX     |        107 |          0 |         11 |        118 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/ratioList.tsx                                                                        | TypeScript JSX     |         28 |          0 |          3 |         31 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/separator.tsx                                                                        | TypeScript JSX     |         27 |          0 |          5 |         32 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/sheet.tsx                                                                            | TypeScript JSX     |        125 |          0 |         16 |        141 |
+| /Users/nilson/Desktop/FinTrack/client/components/ui/table.tsx                                                                            | TypeScript JSX     |        107 |          0 |         11 |        118 |
+| /Users/nilson/Desktop/FinTrack/client/lib/auth.ts                                                                                        | TypeScript         |         22 |          0 |          7 |         29 |
+| /Users/nilson/Desktop/FinTrack/client/lib/data.ts                                                                                        | TypeScript         |        146 |         23 |         34 |        203 |
+| /Users/nilson/Desktop/FinTrack/client/lib/definitions.ts                                                                                 | TypeScript         |        351 |          0 |         14 |        365 |
+| /Users/nilson/Desktop/FinTrack/client/lib/utils.ts                                                                                       | TypeScript         |          6 |          0 |          2 |          8 |
+| /Users/nilson/Desktop/FinTrack/client/middleware.ts                                                                                      | TypeScript         |         21 |          0 |         11 |         32 |
+| /Users/nilson/Desktop/FinTrack/client/models/User.ts                                                                                     | TypeScript         |          5 |          0 |          0 |          5 |
+| /Users/nilson/Desktop/FinTrack/client/next.config.mjs                                                                                    | JavaScript         |         14 |          1 |          2 |         17 |
+| /Users/nilson/Desktop/FinTrack/client/package-lock.json                                                                                  | JSON               |      6,852 |          0 |          1 |      6,853 |
+| /Users/nilson/Desktop/FinTrack/client/package.json                                                                                       | JSON               |         46 |          0 |          1 |         47 |
+| /Users/nilson/Desktop/FinTrack/client/postcss.config.mjs                                                                                 | JavaScript         |          6 |          1 |          2 |          9 |
+| /Users/nilson/Desktop/FinTrack/client/public/FinTrackLogo.svg                                                                            | XML                |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/client/public/placeholder.svg                                                                             | XML                |          1 |          0 |          0 |          1 |
+| /Users/nilson/Desktop/FinTrack/client/styles/globals.css                                                                                 | CSS                |         19 |          4 |          5 |         28 |
+| /Users/nilson/Desktop/FinTrack/client/tailwind.config.ts                                                                                 | TypeScript         |         38 |          0 |          2 |         40 |
+| /Users/nilson/Desktop/FinTrack/client/tsconfig.json                                                                                      | JSON with Comments |         26 |          0 |          1 |         27 |
+| /Users/nilson/Desktop/FinTrack/qodana.yaml                                                                                               | YAML               |          4 |         19 |          7 |         30 |
+| Total                                                                                                                                    |                    |     23,893 |        108 |      1,743 |     25,744 |
++------------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

@@ -30,33 +30,6 @@ const FAQs = (props: Props) => {
     ]
 
     return (
-        // <section id="FAQS" className="leading-relaxed max-w-screen-xl mt-20 mx-auto px-4 md:px-8">
-        //     <div className="space-y-3 text-center">
-        //         <h1 className="text-3xl text-gray-800 font-semibold">
-        //             Frequently Asked Questions
-        //         </h1>
-        //         <p className="text-gray-600 max-w-lg mx-auto text-lg">
-        //             Answered all frequently asked questions, Still confused? feel free to contact us.
-        //         </p>
-        //     </div>
-        //     <div className="mt-14 gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
-        //         {
-        //             faqsList.map((item, idx) => (
-        //                 <div
-        //                     className="space-y-3 mt-5"
-        //                     key={idx}
-        //                 >
-        //                     <h4 className="text-xl text-gray-700 font-medium">
-        //                         {item.q}
-        //                     </h4>
-        //                     <p className="text-gray-500">
-        //                         {item.a}
-        //                     </p>
-        //                 </div>
-        //             ))
-        //         }
-        //     </div>
-        // </section>
         <section id="FAQS" className="leading-relaxed max-w-screen-xl mt-20 mb-10 mx-auto px-4 md:px-8">
             <div className="space-y-3 text-center">
                 <h1 className="text-3xl text-gray-800 font-semibold">
@@ -70,7 +43,7 @@ const FAQs = (props: Props) => {
                 {
                     faqsList.map((item, idx) => (
                         <AccordionItem key={idx} value={`item-${idx}`}>
-                            <AccordionTrigger>{item.q}</AccordionTrigger>
+                            <AccordionTrigger className="text-left">{item.q}</AccordionTrigger>
                             <AccordionContent>
                                 {item.a}
                             </AccordionContent>

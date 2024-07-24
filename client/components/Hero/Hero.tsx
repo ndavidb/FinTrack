@@ -22,8 +22,21 @@ export default function Hero() {
                         </Link>
                     </div>
                 </div>
-                <div className="mt-10">
-                    <Image src="/images/hero.jpg" width={720} height={1280} className="w-full" alt="fintrack_dashboard"/>
+                <div className="mt-10 relative">
+                    <Image
+                        src="/images/hero.jpg"
+                        width={720}
+                        height={1280}
+                        className="w-full hidden md:block"
+                        alt="fintrack_dashboard_desktop"
+                    />
+                    <Image
+                        src="/images/hero-mobile.png"
+                        width={375}
+                        height={812}
+                        className="w-full md:hidden"
+                        alt="fintrack_dashboard_mobile"
+                    />
                 </div>
             </div>
         </section>

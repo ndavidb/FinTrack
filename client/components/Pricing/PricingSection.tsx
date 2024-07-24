@@ -50,7 +50,7 @@ const features = [
 
 const PricingSection = () => {
     return (
-        <section id="pricing" className='relative py-14'>
+        <section id="pricing" className='relative py-7'>
             <div className="max-w-screen-xl mx-auto text-gray-600 md:px-8">
                 <div className='relative max-w-xl space-y-3 px-4 md:px-0'>
                     <h3 className="text-indigo-600 font-semibold">

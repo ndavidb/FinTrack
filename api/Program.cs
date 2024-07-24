@@ -125,7 +125,6 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         await context.Database.MigrateAsync();
-        await Seed.SeedData(context, userManager, roleManager);
     }
     catch (Exception e)
     {
@@ -158,6 +157,6 @@ app.MapControllers();
 RecurringJob.AddOrUpdate<IStockPriceService>(
     "fetch-daily-stock-prices",
     service => service.FetchDailyStockPrices(),
-    Cron.Daily(13, 35));
+    Cron.Daily(12, 30));
 
 app.Run();

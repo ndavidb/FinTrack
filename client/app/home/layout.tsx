@@ -4,7 +4,7 @@ import Footer from "@/components/Footer/Footer";
 
 const Layout = ({children}: {children: React.ReactNode}) => {
     return (
-        <>
+        <div className="bg-gray-100">
             <UserNavbar/>
             <div className="h-screen flex-col md:flex-row md:overflow-hidden max-w-screen-xl mx-auto">
                 <div className="flex flex-col w-full h-full">
@@ -14,7 +14,7 @@ const Layout = ({children}: {children: React.ReactNode}) => {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
 
     );
 };

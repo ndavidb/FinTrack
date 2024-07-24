@@ -13,16 +13,14 @@ interface Props {
 export default function SearchStocks({search, onSearchSubmit, handleSearchChange, placeholder}: Props) {
     return (
         <>
-            <Card
-                className="sm:col-span-2 border-none [&>*]:pl-2"
-            >
-                <CardHeader className="pt-3 pb-0">
+            <Card className="sm:col-span-2 border-none [&>*]:pl-5">
+                <CardHeader className="py-3">
                     <CardTitle>Search a stock</CardTitle>
                     <CardDescription>Search for any stock of NASDAQ</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-row p-4 w-3/4 items-center">
-                    <Searchbar placeholder={placeholder} handleSearchChange={handleSearchChange} onSearchSubmit={onSearchSubmit} search={search}/>
-                    <Button size={"sm"} className="text-sm font-medium ml-4">Search</Button>
+                    <Searchbar placeholder={placeholder} handleSearchChange={handleSearchChange}
+                               onSearchSubmit={onSearchSubmit} search={search}/>
                 </CardContent>
             </Card>
         </>

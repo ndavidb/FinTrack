@@ -45,6 +45,32 @@ public class PortfoliosController : ControllerBase
         return Ok(userPortfolio);
     }
 
+    [HttpGet]
+    [Route("stocks-performance")]
+    [Authorize]
+    public async Task<ActionResult<List<StockPerformanceDto>>> GetUserStocksPerformance()
+    {
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
+        var performanceStocksPortfolio = await _portfolioService.GetUserStocksPerformance(appUser);
+
+        return Ok(performanceStocksPortfolio);
+    }
+
+    [HttpGet]
+    [Route("portfolio-performance")]
+    [Authorize]
+    public async Task<ActionResult<List<PortfolioPerformance>>> GetPortfolioPerformance()
+    {
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
+        if (appUser is null) throw new Exception("User was not found");
+        
+        var portfolioPerformance = await _portfolioService.GetUserPortfolioPerformance(appUser);
+
+        return Ok(portfolioPerformance);
+    }
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<StockDto>> CreatePortfolio(string symbol)
@@ -56,27 +82,31 @@ public class PortfoliosController : ControllerBase
 
         if (stock is null)
         {
-            stock = await _fmpService.FindStockBySymbolAsync(symbol);
+            var stockFmp = await _fmpService.FindStockBySymbolAsync(symbol);
             
-            if (stock == null)
+            if (stockFmp == null)
             {
-                return BadRequest("Stock not found");
+                return BadRequest(new { message = "Stock not found" });
             }
-            await _stockService.CreateStockAsync(stock);
+            await _stockService.CreateStockAsync(stockFmp);
+            
+            await _portfolioService.AddPortfolioHistory(symbol);
         }
+        
+        stock = await _stockService.GetStockBySymbolAsync(symbol);
 
         var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);
         
-        if (userPortfolio.Any(s => s.Symbol.ToLower() == symbol.ToLower()))
+        if (userPortfolio.Any(s => string.Equals(s.Symbol, symbol, StringComparison.OrdinalIgnoreCase)))
         {
-            return BadRequest("Stock already exists in portfolio");
+            return BadRequest(new { message = "Stock already exists in portfolio" });
         }
 
         var currentPrice = await _fmpService.GetCurrentPrice(symbol);
 
         var newPortfolio = new Portfolio
         {
-            StockId = stock.Id,
+            StockId = stock!.Id,
             AppUserId = appUser.Id,
             PurchaseDate = DateTime.UtcNow,
             PurchasePrice = currentPrice
@@ -84,8 +114,7 @@ public class PortfoliosController : ControllerBase
 
         await _portfolioService.AddPortfolioAsync(newPortfolio);
 
-        return Created();
-
+        return Created("", new { message = "Stock added to portfolio" });
     }
     
     [HttpDelete]

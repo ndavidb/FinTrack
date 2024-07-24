@@ -25,17 +25,18 @@ const footerMenu = [
 
 const Footer = () => {
     return (
-        <footer className="pt-10 mt-20">
+        <footer className="pt-10 mt-10 mb-5">
             <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
-                <div className="space-y-6 sm:max-w-md sm:mx-auto sm:text-center">
+                <div
+                    className="flex flex-col justify-center items-center space-y-6 sm:max-w-md sm:mx-auto sm:text-center">
                     <Image src="/FinTrackLogo.svg" width={130}
-                           height={65}  className="w-32 sm:mx-auto" alt="FinTrack Logo"/>
-                    <p>
-                        Nulla auctor metus vitae lectus iaculis, vel euismod massa efficitur.
-                    </p>
+                           height={65} className="w-32 sm:mx-auto" alt="FinTrack Logo"/>
+
                 </div>
                 <div className="mt-10 py-10 border-t items-center justify-between sm:flex">
-                    <p className="text-md">© 2024 <a href="https://github.com/ndavidb" className="hover:text-blue-600">Nilson David Bello</a>. All rights reserved.</p>
+
+                    <p className="text-md">© 2024 <a href="https://github.com/ndavidb" className="hover:text-blue-600">Nilson
+                        David Bello</a>. All rights reserved.</p>
                     <ul className="flex flex-wrap items-center gap-4 mt-6 sm:text-md sm:mt-0">
                         {
                             footerMenu.map((item, idx) => (
@@ -48,7 +49,12 @@ const Footer = () => {
                         }
                     </ul>
                 </div>
+                <p className="w-full text-center"><span className="font-bold">Disclaimer: </span>FinTrack is a non-commercial,
+                    educational project.
+                    It is not intended for real financial transactions or investment decisions.</p>
+
             </div>
+
         </footer>
     );
 };

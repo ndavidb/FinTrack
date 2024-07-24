@@ -3,8 +3,8 @@ const Brand = () => {
     return (
         <Image src="/FinTrackLogo.svg" 
                alt="FinTrackLogo" 
-               width={140} 
-               height={70} 
+               width={100} 
+               height={50} 
                priority
         />
     );

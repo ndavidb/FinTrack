@@ -56,7 +56,7 @@ public class StockService : IStockService
 
     public async Task<Stock?> GetStockBySymbolAsync(string symbol)
     {
-        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol.ToLower() == symbol);
+        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol.ToLower() == symbol.ToLower());
 
         return stock;
     }

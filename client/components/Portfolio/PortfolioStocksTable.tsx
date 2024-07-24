@@ -1,4 +1,6 @@
-﻿import { Badge } from "@/components/ui/badge"
+﻿'use client';
+
+import { useTransition } from 'react';
 import {
     Card,
     CardContent,
@@ -14,13 +16,39 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {format} from "date-fns/format";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import {removeStockFromPortfolio} from "@/actions/portfolioActions";
 
-interface Props {
-    portfolioData : StockPortfolio[];
+interface StockPortfolioPerformance {
+    symbol: string;
+    companyName: string;
+    purchaseDate: string;
+    purchasePrice: number;
+    currentPrice: number;
+    performance: number;
 }
 
-export default function PortfolioStocksTable({portfolioData} : Props) {
+interface Props {
+    portfolioPerformance: StockPortfolioPerformance[];
+}
+
+export default function PortfolioStocksTable({ portfolioPerformance }: Props) {
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
+
+    const handleRemoveStock = async (symbol: string) => {
+        startTransition(async () => {
+            try {
+                await removeStockFromPortfolio(symbol);
+                router.refresh();
+            } catch (error: any) {
+                console.log("Failed to remove stock", error.message);
+            }
+        });
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -32,24 +60,33 @@ export default function PortfolioStocksTable({portfolioData} : Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[180px]">Stock</TableHead>
-                                <TableHead>Current Price</TableHead>
+                                <TableHead className="w-[180px]">Company name</TableHead>
+                                <TableHead>Purchase Date</TableHead>
                                 <TableHead className="hidden md:table-cell">Purchase Price</TableHead>
+                                <TableHead className="hidden md:table-cell">Current Price</TableHead>
                                 <TableHead>Performance</TableHead>
-                                <TableHead className="hidden md:table-cell">Purchase Date</TableHead>
-                                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {portfolioData.map((stock) => (
-                                <TableRow key={stock.id}>
+                            {portfolioPerformance.map((stock) => (
+                                <TableRow key={stock.symbol}>
                                     <TableCell className="font-medium">{stock.companyName}</TableCell>
-                                    <TableCell>{stock.purchasePrice}</TableCell>
-                                    <TableCell className="hidden md:table-cell">{stock.purchasePrice}</TableCell>
-                                    <TableCell className="text-green-600">+25%</TableCell>
-                                    <TableCell className="hidden md:table-cell">{format(new Date(stock.purchaseDate), 'dd-MM-yyyy')}</TableCell>
-                                    <TableCell className="hidden sm:table-cell">
-                                        <Badge variant="secondary">Active</Badge>
+                                    <TableCell>{format(new Date(stock.purchaseDate), 'dd-MM-yyyy')}</TableCell>
+                                    <TableCell className="hidden md:table-cell">${stock.purchasePrice.toFixed(2)}</TableCell>
+                                    <TableCell className="hidden md:table-cell">${stock.currentPrice.toFixed(2)}</TableCell>
+                                    <TableCell className={stock.performance >= 0 ? "text-green-500" : "text-red-500"}>
+                                        {stock.performance.toFixed(2)}%
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                            size="sm"
+                                            className="bg-gray-400 hover:bg-red-500"
+                                            onClick={() => handleRemoveStock(stock.symbol)}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? 'Removing...' : 'Remove'}
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

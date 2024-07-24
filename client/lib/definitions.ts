@@ -352,4 +352,14 @@ declare global {
         purchaseDate: string;
         purchasePrice: number;
     }
+    
+    export interface StockPortfolioPerformance {
+        symbol: string;
+        companyName: string;
+        website: string;
+        purchaseDate: string;
+        purchasePrice: number;
+        currentPrice: number;
+        performance: number;
+    }
 }

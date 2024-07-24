@@ -4,7 +4,7 @@ import {unstable_noStore as nonStore} from "next/cache";
 export async function searchCompanies(query: string) {
     nonStore();
     try {
-        const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${query}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
+        const response = await fetch(`https://financialmodelingprep.com/api/v3/search?query=${query}&limit=15&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_API_KEY}`);
         if (!response.ok) {
             throw new Error("Request failed");
         }
@@ -117,7 +117,8 @@ export async function getStocksPortfolio() : Promise<StockPortfolio[]> {
     
     const token = cookieManager.get('token')?.value;
     try {
-        const response = await fetch('http://localhost:5254/Portfolios/', {
+        const response = await fetch('http://localhost:5254/Portfolios', {
+            method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -141,3 +142,39 @@ export async function getStocksPortfolio() : Promise<StockPortfolio[]> {
         throw error;
     }
 }
+
+export async function getPortfolioPerformance() : Promise<StockPortfolioPerformance[]>{
+    nonStore();
+    
+    const {cookies} = await import('next/headers');
+    const cookieManager = cookies();
+    
+    const token = cookieManager.get('token')?.value;
+    
+    try {
+        const response = await fetch('http://localhost:5254/Portfolios/stocks-performance', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+        });
+        
+        if (!response.ok){
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!Array.isArray(data.$values)){
+            console.error('Received non-array data:', data);
+            throw new Error('Invalid data format received from server');
+        }
+        
+        return data.$values as StockPortfolioPerformance[];
+    } catch (error: any) {
+        console.error('Error fetching portfolio:', error.message);
+        throw error;
+    }
+}
+
+

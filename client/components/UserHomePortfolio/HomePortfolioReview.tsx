@@ -1,11 +1,11 @@
 ﻿import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {getPortfolioPerformance} from "@/lib/data";
 
-interface Props {
-}
-
-export default function HomePortfolioReview({}: Props) {
+export default async function HomePortfolioReview() {
+    const portfolioPerformances = await getPortfolioPerformance();
+    
     return (
         <Card
             className="sm:col-span-2"
@@ -13,28 +13,18 @@ export default function HomePortfolioReview({}: Props) {
             <CardHeader className="pb-5">
                 <CardTitle>My portfolio</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col space-y-2">
+            <CardContent className="flex flex-col space-y-2 md:mb-2">
                 <div>
                     <p className="font-semibold">
-                        Best performing stocks
+                        Performance summary
                     </p>
-                    <div className="flex flex-row text-sm [&>*]:px-2 [&>*]:mr-4">
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
-                    </div>
-                </div>
-
-                <div>
-                    <p className="font-semibold">
-                        Least performing stocks
-                    </p>
-                    <div className="flex flex-row text-sm [&>*]:px-2 [&>*]:mr-4">
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
-                        <p>Apple: 22%</p>
+                    <div className="flex flex-col md:flex-row text-sm [&>*]:pr-2 [&>*]:mr-4 spacey-4">
+                        {portfolioPerformances.map((stock) =>(
+                            <div key={stock.symbol} className="flex flex-row md:space-x-2"> 
+                                <p className="font-medium">{stock.companyName}:</p>
+                                <p className={`text-green-500 ${stock.performance >= 0 ? `text-green-600` : 'text-red-500'}`}>{stock.performance.toFixed(2)}%</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </CardContent>

@@ -1,5 +1,6 @@
 import React, {ChangeEvent, SyntheticEvent} from "react";
 import {FaMagnifyingGlassChart } from "react-icons/fa6";
+import {Button} from "@/components/ui/button";
 
 interface Props {
     onSearchSubmit: (e: SyntheticEvent) => void;
@@ -20,8 +21,9 @@ export default function Searchbar({placeholder, onSearchSubmit, handleSearchChan
                     placeholder={placeholder}
                     value={search}
                     onChange={handleSearchChange}
-                    className="peer font-medium block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                    className="peer font-medium block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm placeholder:text-gray-500 "
                 />
+                <Button onClick={() => onSearchSubmit} size={"sm"} className="text-sm font-medium ml-4">Search</Button>
             </form>
             <FaMagnifyingGlassChart
                 className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>

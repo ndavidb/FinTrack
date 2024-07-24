@@ -12,7 +12,7 @@ export default function NavHeader({state, onClick}: Props){
     
 
     return (
-        <div className="flex items-center justify-between py-3 md:py-5 md:block">
+        <div className="flex items-center justify-between  md:py-3 md:block">
             <Link href="/">
                 <Brand />
             </Link>

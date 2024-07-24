@@ -3,8 +3,7 @@ import { Inter as FontSans} from "next/font/google";
 import "../styles/globals.css";
 import React from "react";
 import {cn} from "@/lib/utils";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
+import {ToastProvider} from "@/components/ToastProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -12,7 +11,10 @@ const fontSans = FontSans({
 })
 export const metadata: Metadata = {
   title: "FinTrack",
-  description: "Financial App to track and review performance of the top 100 NASDAQ stocks",
+  description: "Financial App to track and review performance of NASDAQ stocks",
+  icons : {
+    icon: '/favicon.ico',
+  }
 };
 
 export default function RootLayout({
@@ -22,8 +24,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen bg-background font-sans antialiased",
-          fontSans.variable)}>{children}</body>
+    <body className={cn("min-h-screen bg-background font-sans antialiased",
+        fontSans.variable)}>
+    <link rel="icon" href="./favicon.ico" sizes="any"/>
+
+    {children}
+    <ToastProvider/>
+    </body>
     </html>
   );
 }

@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dto.Stock;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -51,5 +52,10 @@ public class StockPriceService : IStockPriceService
         {
             _logger.LogError(e, "Error in FetchDailyStockPrices");
         }
+    }
+
+    public async Task AddHistoricalPricesForNewStock(string symbol)
+    {
+        
     }
 }

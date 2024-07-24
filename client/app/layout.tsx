@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import React from "react";
 import {cn} from "@/lib/utils";
 import {ToastProvider} from "@/components/ToastProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const fontSans = FontSans({
   subsets: ["latin"],

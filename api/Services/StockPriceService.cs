@@ -53,9 +53,5 @@ public class StockPriceService : IStockPriceService
             _logger.LogError(e, "Error in FetchDailyStockPrices");
         }
     }
-
-    public async Task AddHistoricalPricesForNewStock(string symbol)
-    {
-        
-    }
+    
 }

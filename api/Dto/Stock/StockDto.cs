@@ -1,6 +1,6 @@
 ﻿using api.Dto.Comment;
 
-namespace api.Dto;
+namespace api.Dto.Stock;
 
 public class StockDto
 {
@@ -9,5 +9,5 @@ public class StockDto
     public string Industry { get; set; } = string.Empty;
     public long MarketCap { get; set; }
     public string Website { get; set; } = string.Empty;
-    public List<CommentDto> Comments { get; set; }
+    public List<CommentDto>? Comments { get; set; }
 }

@@ -19,7 +19,7 @@ public class FmpService : IFmpService
         _logger = logger;
     }
 
-    public async Task<Stock> FindStockBySymbolAsync(string symbol)
+    public async Task<Stock?> FindStockBySymbolAsync(string symbol)
     {
         try
         {

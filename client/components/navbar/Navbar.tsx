@@ -14,7 +14,6 @@ export default function Navbar (){
     const [isClient, setIsClient] = useState(false);
     
     const menu = [
-        {name: "Features", path:"#features"},
         {name: "Pricing", path:"#pricing"},
         {name: "FAQs", path: "#FAQS"},
     ]

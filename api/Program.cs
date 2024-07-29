@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -48,7 +50,8 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -145,9 +148,9 @@ app.UseCors(c => c
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-     .WithOrigins("http://localhost:3000/",
-         "https://www.ndavidbello.live/")
-    .SetIsOriginAllowed(origin => true));
+    .WithOrigins(
+        "https://www.ndavidbello.live/"
+    ));
 
 app.UseAuthentication();
 app.UseAuthorization();

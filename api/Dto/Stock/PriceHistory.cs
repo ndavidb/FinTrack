@@ -1,12 +1,14 @@
+namespace api.Dto.Stock;
+
 public class PriceHistoryResponse
 {
     public string Symbol { get; set; }
     public List<HistoricalDataPoint> Historical { get; set; }
 }
 
-public class HistoricalDataPoint
+public abstract class HistoricalDataPoint
 {
-    public string Date { get; set; }
+    public string Date { get; set; } = null!;
     public decimal Open { get; set; }
     public decimal High { get; set; }
     public decimal Low { get; set; }
@@ -17,7 +19,7 @@ public class HistoricalDataPoint
     public decimal Change { get; set; }
     public decimal ChangePercent { get; set; }
     public decimal Vwap { get; set; }
-    public string Label { get; set; }
+    public string Label { get; set; } = null!;
     public decimal ChangeOverTime { get; set; }
 }
 

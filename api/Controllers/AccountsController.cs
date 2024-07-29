@@ -14,85 +14,85 @@ public class AccountsController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
-    public AccountsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+    private readonly ILogger<AccountsController> _logger;
+
+    public AccountsController(
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        ITokenService tokenService,
+        ILogger<AccountsController> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
+        _logger = logger;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
-        try
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        }
+
+        var appUser = new AppUser
+        {
+            UserName = registerDto.Username,
+            Email = registerDto.Email
+        };
+
+        if (registerDto.Password != null)
+        {
+            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
+
+            if (!result.Succeeded)
             {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
                 return BadRequest(ModelState);
             }
+        }
 
-            var appUser = new AppUser
-            {
-                UserName = registerDto.Username,
-                Email = registerDto.Email
-            };
-            
-            var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-            
-            if (createdUser.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-                if (roleResult.Succeeded)
-                {
-                    return Ok("User created");
-                }
-                
-                return StatusCode(500, roleResult.Errors);
-            }
-            else
-            {
-                return StatusCode(500, createdUser.Errors);
-            }
-        }
-        catch (Exception e)
+        var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+        if (!roleResult.Succeeded)
         {
-            return StatusCode(500, e);
+            _logger.LogError("Failed to add user to role: {@Errors}", roleResult.Errors);
+            return StatusCode(500, "Failed to create user. Please try again later.");
         }
+
+        return Ok(new { message = "User created successfully" });
     }
     
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        try
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
-
-            if (user == null) return Unauthorized("Invalid email");
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-
-            if (!result.Succeeded)
-            {
-                return Unauthorized("Invalid username and/or password");
-            }
-
-            return Ok(new NewUserDto
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user)
-            });
-
+            return BadRequest(ModelState);
         }
-        catch (Exception e)
+        
+        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+
+        if (user == null)
         {
-            Console.WriteLine(e);
-            throw;
+            return Unauthorized("Invalid email or password");
         }
+
+        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+        if (!result.Succeeded)
+        {
+            return Unauthorized("Invalid email or password");
+        }   
+
+        return Ok(new NewUserDto
+        {
+            UserName = user.UserName,
+            Email = user.Email,
+            Token = _tokenService.CreateToken(user)
+        });
     }
 }

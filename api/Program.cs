@@ -90,16 +90,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddHangfire(configuration => configuration
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UsePostgreSqlStorage(options =>
-    {
-        options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
-    }));
-
-builder.Services.AddHangfireServer();
+// builder.Services.AddHangfire(configuration => configuration
+//     .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+//     .UseSimpleAssemblyNameTypeSerializer()
+//     .UseRecommendedSerializerSettings()
+//     .UsePostgreSqlStorage(options =>
+//     {
+//         options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
+//     }));
+//
+// builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
@@ -117,7 +117,11 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-app.UseHangfireDashboard();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation($"Current environment: {app.Environment.EnvironmentName}");
+logger.LogInformation($"Connection string: {builder.Configuration.GetConnectionString("DefaultConnection")}");
+
+// app.UseHangfireDashboard();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -155,9 +159,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-RecurringJob.AddOrUpdate<IStockPriceService>(
-    "fetch-daily-stock-prices",
-    service => service.FetchDailyStockPrices(),
-    Cron.Daily(12, 30));
+// RecurringJob.AddOrUpdate<IStockPriceService>(
+//     "fetch-daily-stock-prices",
+//     service => service.FetchDailyStockPrices(),
+//     Cron.Daily(12, 30));
+
+
 
 app.Run();

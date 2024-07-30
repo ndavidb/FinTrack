@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using api.Data;
 using api.Filters;
 using api.Interfaces;
+using api.Middleware;
 using api.Models;
 using api.Repositories;
 using api.Services;
@@ -121,6 +122,9 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogInformation($"Current environment: {app.Environment.EnvironmentName}");

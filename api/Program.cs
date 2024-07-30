@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using api.Data;
+using api.Filters;
 using api.Interfaces;
 using api.Models;
 using api.Repositories;
@@ -13,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplicationInsightsTelemetry();
@@ -99,7 +101,10 @@ builder.Services.AddHangfire(configuration => configuration
         options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
     }));
 
-builder.Services.AddHangfireServer();
+builder.Services.AddHangfireServer(options =>
+{
+    options.WorkerCount = Environment.ProcessorCount * 2; // Adjust based on your App Service plan
+});
 
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
@@ -122,6 +127,11 @@ logger.LogInformation($"Current environment: {app.Environment.EnvironmentName}")
 logger.LogInformation($"Connection string: {builder.Configuration.GetConnectionString("DefaultConnection")}");
 
 app.UseHangfireDashboard();
+
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+});
 
 using (var scope = app.Services.CreateScope())
 {
@@ -151,7 +161,8 @@ app.UseCors(c => c
     .AllowAnyHeader()
     .AllowCredentials()
     .WithOrigins(
-        "https://www.ndavidbello.live/"
+        "https://www.ndavidbello.live/",
+        "https://fintrack-backend.azurewebsites.net"
     ));
 
 app.UseAuthentication();
@@ -163,7 +174,5 @@ RecurringJob.AddOrUpdate<IStockPriceService>(
     "fetch-daily-stock-prices",
     service => service.FetchDailyStockPrices(),
     Cron.Daily(12, 30));
-
-
 
 app.Run();

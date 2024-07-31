@@ -16,6 +16,21 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder
+            .WithOrigins(
+                "https://www.ndavidbello.live",
+                "https://ndavidbello.live",
+                "https://fintrack-backend.azurewebsites.net"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplicationInsightsTelemetry();
@@ -35,6 +50,7 @@ builder.Services.AddSwaggerGen(option =>
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
+    
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -160,14 +176,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(c => c
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowCredentials()
-    .WithOrigins(
-        "https://www.ndavidbello.live/",
-        "https://fintrack-backend.azurewebsites.net"
-    ));
+app.UseCors("AllowSpecificOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();

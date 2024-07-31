@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using api.Dto.Stock;
 using api.Interfaces;
-using api.Mappers;
 using api.Models;
 
 namespace api.Services;

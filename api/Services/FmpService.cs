@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using api.Dto.Stock;
 using api.Interfaces;
 using api.Mappers;
@@ -32,14 +33,15 @@ public class FmpService : IFmpService
 
                 var options = new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 };
 
                 var stocks = JsonSerializer.Deserialize<List<FmpStock>>(content, options);
-                var stock = stocks?.FirstOrDefault();
 
-                if (stock != null)
+                if (stocks != null && stocks.Any())
                 {
+                    var stock = stocks.First();
                     return new Stock
                     {
                         Symbol = stock.symbol,
@@ -49,6 +51,10 @@ public class FmpService : IFmpService
                         Website = stock.website
                     };
                 }
+                else
+                {
+                    _logger.LogWarning($"No stock data found for symbol: {symbol}");
+                }
             }
             else
             {
@@ -57,9 +63,14 @@ public class FmpService : IFmpService
 
             return null;
         }
+        catch (JsonException jsonEx)
+        {
+            _logger.LogError(jsonEx, $"JSON Deserialization error for symbol {symbol}: {jsonEx.Message}");
+            return null;
+        }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in FindStockBySymbolAsync");
+            _logger.LogError(ex, $"Error in FindStockBySymbolAsync for symbol {symbol}: {ex.Message}");
             return null;
         }
     }

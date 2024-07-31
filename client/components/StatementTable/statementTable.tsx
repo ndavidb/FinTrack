@@ -1,5 +1,4 @@
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {TestDataCompany} from "@/components/StatementTable/TestData";
 
 interface Props {
     config: any;

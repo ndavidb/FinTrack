@@ -2,6 +2,7 @@
 
 public abstract class FmpStock
 {
+    public FmpStock() {}
     public string symbol { get; set; } = null!;
     public double price { get; set; }
     public double beta { get; set; }

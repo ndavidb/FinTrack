@@ -23,27 +23,43 @@ public class FmpService : IFmpService
     {
         try
         {
-            var result = await _httpClient
-                .GetAsync($"https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey={_config["FMPKey"]}");
+            var result = await _httpClient.GetAsync($"https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey={_config["FMPKey"]}");
 
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                var task = JsonSerializer.Deserialize<FmpStock[]>(content);
-                var stock = task?[0];
+                _logger.LogInformation($"FMP API Response: {content}");
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var stocks = JsonSerializer.Deserialize<List<FmpStock>>(content, options);
+                var stock = stocks?.FirstOrDefault();
+
                 if (stock != null)
                 {
-                    return stock.ToStockFromFmpStock();
+                    return new Stock
+                    {
+                        Symbol = stock.symbol,
+                        CompanyName = stock.companyName,
+                        Industry = stock.industry,
+                        MarketCap = stock.mktCap,
+                        Website = stock.website
+                    };
                 }
-                return null;
+            }
+            else
+            {
+                _logger.LogError($"FMP API request failed: {result.StatusCode}");
             }
 
             return null;
-
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError(ex, "Error in FindStockBySymbolAsync");
             return null;
         }
     }

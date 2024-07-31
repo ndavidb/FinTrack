@@ -13,11 +13,14 @@ public class PortfolioService : IPortfolioService
     private readonly ApplicationDbContext _context;
     private readonly IStockService _stockService;
     private readonly IFmpService _fmpService;
-    public PortfolioService(ApplicationDbContext context, IStockService stockService, IFmpService fmpService)
+    private readonly ILogger<PortfolioService> _logger;
+
+    public PortfolioService(ApplicationDbContext context, IStockService stockService, IFmpService fmpService, ILogger<PortfolioService> logger)
     {
         _context = context;
         _stockService = stockService;
         _fmpService = fmpService;
+        _logger = logger;
     }
 
 
@@ -44,6 +47,8 @@ public class PortfolioService : IPortfolioService
     {
         await _context.Portfolios.AddAsync(portfolio);
         await _context.SaveChangesAsync();
+
+        _logger.LogInformation($"Added stock {portfolio.StockId} to portfolio for user {portfolio.AppUserId}");
 
         return portfolio;
     }

@@ -117,7 +117,7 @@ export async function getStocksPortfolio() : Promise<StockPortfolio[]> {
     
     const token = cookieManager.get('token')?.value;
     try {
-        const response = await fetch('http://localhost:5254/Portfolios', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Portfolios`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -152,7 +152,7 @@ export async function getPortfolioPerformance() : Promise<StockPortfolioPerforma
     const token = cookieManager.get('token')?.value;
     
     try {
-        const response = await fetch('http://localhost:5254/Portfolios/stocks-performance', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Portfolios/stocks-performance`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

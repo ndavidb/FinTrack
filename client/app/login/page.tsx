@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 
 
 export default function Login() {
-    const api = "http://localhost:5254/accounts/login"
+    const api = `${process.env.NEXT_PUBLIC_API_URL}/accounts/login`;
     const router = useRouter();
     const {mutate} = useUser();
     const [error, setError] = useState<string | null>(null);

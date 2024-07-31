@@ -8,7 +8,7 @@ export async function removeStockFromPortfolio(symbol: string) {
     const token = cookiesStore.get('token')?.value;
     
     try {
-        const response = await fetch(`http://localhost:5254/Portfolios?symbol=${symbol}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Portfolios?symbol=${symbol}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -32,7 +32,7 @@ export async function addStockPortfolio(symbol: string) {
     const token = cookiesStore.get('token')?.value;
 
     try {
-        const response = await fetch(`http://localhost:5254/Portfolios?symbol=${symbol}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Portfolios?symbol=${symbol}`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${token}`,

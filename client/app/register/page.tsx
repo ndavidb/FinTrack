@@ -11,7 +11,7 @@ import {useRouter} from "next/navigation";
 import {useUser} from "@/lib/auth";
 
 export default function Register() {
-    const api = "http://localhost:5254/accounts/register"
+    const api = `${process.env.NEXT_PUBLIC_API_URL}/accounts/register`
     const router = useRouter();
     const {mutate} = useUser();
     const [error, setError] = useState<string | null>(null);

@@ -21,7 +21,7 @@ export default function Searchbar({placeholder, onSearchSubmit, handleSearchChan
                     placeholder={placeholder}
                     value={search}
                     onChange={handleSearchChange}
-                    className="peer font-medium block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm placeholder:text-gray-500 "
+                    className="peer font-medium block md:w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm placeholder:text-gray-500 "
                 />
                 <Button onClick={() => onSearchSubmit} size={"sm"} className="text-sm font-medium ml-4">Search</Button>
             </form>

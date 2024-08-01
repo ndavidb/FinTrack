@@ -36,7 +36,6 @@ export async function addStockPortfolio(symbol: string) {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Accept": "application/json"
             }
         });
 

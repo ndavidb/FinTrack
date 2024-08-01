@@ -22,7 +22,7 @@ export default function Navbar({className}: Props) {
             <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
                 <NavHeader state={state} onClick={() => setState(!state)}/>
                 <div className={`flex-1 pb-3 mt-8 md:block md:pb-0 md:mt-0 ${state ? 'block' : 'hidden'}`}>
-                    <div className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 font-semibold">
+                    <div className="flex flex-col justify-end md:items-center space-y-6 md:flex md:flex-row md:space-x-6 md:space-y-0 font-semibold">
                         <Link href="/home/" className={`link ${pathname === '/home' ? 'active border-b-2 border-b-black' : ''}`}>Home</Link>
                         <Link href="/portfolio/" className={`link ${pathname === '/portfolio' ? 'active border-b-2 border-b-black' : ''}`}>Portfolio</Link>
                         <Button className="bg-black" onClick={logout}>

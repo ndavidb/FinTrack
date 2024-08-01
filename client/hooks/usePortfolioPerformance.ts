@@ -27,7 +27,7 @@ const fetcher = async (url: string) => {
 };
 
 export function usePortfolioPerformance(){
-    const {data, error, isLoading} = useSWR<ApiResponse>('http://localhost:5254/Portfolios/portfolio-performance', fetcher);
+    const {data, error, isLoading} = useSWR<ApiResponse>(`${process.env.NEXT_PUBLIC_API_URL}/portfolios/portfolio-performance`, fetcher);
     
     return {
         data: data?.$values ?? null,

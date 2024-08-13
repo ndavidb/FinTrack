@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/auth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,7 +35,9 @@ export default function Register() {
             });
 
             if (response.ok) {
-                router.push('/login');
+                const data = await response.json();
+                Cookies.set('token', data.token);
+                router.push('/home');
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || 'Registration failed');

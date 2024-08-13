@@ -64,7 +64,14 @@ public class AccountsController : ControllerBase
             return StatusCode(500, "Failed to create user. Please try again later.");
         }
 
-        return Ok(new { message = "User created successfully" });
+        var token = _tokenService.CreateToken(appUser);
+
+        return Ok(new NewUserDto
+        {
+            Email = appUser.Email,
+            Token = token
+        });
+        // return Ok(new { message = "User created successfully" });
     }
     
     [HttpPost("login")]

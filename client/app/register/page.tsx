@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Brand from "@/components/Brand/Brand";
+import Cookies from "js-cookie";
 
 export default function Register() {
     const api = `${process.env.NEXT_PUBLIC_API_URL}/accounts/register`;
@@ -23,7 +24,6 @@ export default function Register() {
         setError(null);
 
         const formData = new FormData(e.target as HTMLFormElement);
-        const username = formData.get('username') as string;
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
 
@@ -31,7 +31,7 @@ export default function Register() {
             const response = await fetch(api, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, email, password})
+                body: JSON.stringify({email, password})
             });
 
             if (response.ok) {
@@ -62,10 +62,6 @@ export default function Register() {
                     <CardContent>
                         {error && <div className="text-red-500 mb-4">{error}</div>}
                         <form className="grid gap-4" onSubmit={handleSubmitRegistration}>
-                            <div className="grid gap-2">
-                                <Label htmlFor="username">Username</Label>
-                                <Input id="username" name="username" placeholder="Max" required/>
-                            </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input

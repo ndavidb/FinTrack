@@ -24,7 +24,8 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "https://www.ndavidbello.live",
                 "https://ndavidbello.live",
-                "https://fintrack-backend.azurewebsites.net"
+                "https://fintrack-backend.azurewebsites.net",
+                "http://localhost:3000"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()
@@ -129,6 +130,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IFmpService, FmpService>();
 builder.Services.AddScoped<IStockPriceService, StockPriceService>();
+
 builder.Services.AddHttpClient<IFmpService, FmpService>();
 
 builder.Services.AddControllers()

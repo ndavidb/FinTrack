@@ -28,7 +28,7 @@ public class PortfolioService : IPortfolioService
     {
         var userPortfolio = await _context.Portfolios
             .Where(p => p.AppUserId == user.Id)
-            .Select(portfolio => new StockPortfolioDto()
+            .Select(portfolio => new StockPortfolioDto
             {
                 Id = portfolio.Stock.Id,
                 Symbol = portfolio.Stock.Symbol,
@@ -146,14 +146,14 @@ public class PortfolioService : IPortfolioService
                 p.Stock.Website,
                 p.PurchaseDate,
                 p.PurchasePrice,
-                LatestPrice = _context.StockPrices
+                LatestPrice = DateOnly.FromDateTime(p.PurchaseDate) == DateOnly.FromDateTime(DateTime.Today) ? p.PurchasePrice : _context.StockPrices
                     .Where(sp => sp.StockId == p.StockId)
                     .OrderByDescending(sp => sp.Date)
                     .Select(sp => sp.Price)
                     .FirstOrDefault()
             })
             .ToListAsync();
-
+        
         return performances.Select(p => new StockPerformanceDto
         {
             Symbol = p.Symbol,
@@ -161,7 +161,7 @@ public class PortfolioService : IPortfolioService
             Website = UrlManagement.CleanUrl(p.Website),
             PurchaseDate = p.PurchaseDate,
             PurchasePrice = p.PurchasePrice,
-            CurrentPrice = p.LatestPrice,
+            CurrentPrice =  p.LatestPrice,
             Performance = (p.LatestPrice - p.PurchasePrice) / p.PurchasePrice * 100
         }).ToList();
     }

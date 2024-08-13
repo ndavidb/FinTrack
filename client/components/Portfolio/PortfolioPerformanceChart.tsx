@@ -42,7 +42,7 @@ export default function PortfolioPerformanceChart({ className }: StockPriceChart
         <div className={className}>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl">General Stocks Performance</CardTitle>
+                    <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[400px]">
                     <ResponsiveContainer width="100%" height="100%">

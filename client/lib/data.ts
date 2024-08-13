@@ -109,7 +109,7 @@ export async function getCompanyIncomeStatement(query: string) {
     }
 }
 
-export async function getStocksPortfolio() : Promise<StockPortfolio[]> {
+export async function   getStocksPortfolio() : Promise<StockPortfolio[]> {
     nonStore();
     
     const {cookies} = await import('next/headers');

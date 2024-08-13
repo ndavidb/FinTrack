@@ -40,14 +40,25 @@ export default function SearchCard({ id, searchResult }: Props) {
                 <Link href={`company/${searchResult.symbol}/profile`} className="font-medium">
                     {searchResult.name} - {searchResult.symbol}
                 </Link>
-                <Button
-                    onClick={() => handleAddingStock(searchResult.symbol)}
-                    variant={added ? "default" : "secondary"}
-                    disabled={loading || added}
-                    className="hover:bg-primary-600"
-                >
-                    {loading ? "Adding..." : added ? "Added" : "Add to portfolio"}
-                </Button>
+                <div className="flex gap-x-2">
+                    
+                    <Button 
+                        size="sm"
+                        variant="outline"
+                    >
+                        <Link href={`company/${searchResult.symbol}/profile`}>Review stock</Link>
+                    </Button>
+                    <Button
+                        size="sm"
+                        onClick={() => handleAddingStock(searchResult.symbol)}
+                        variant={added ? "default" : "secondary"}
+                        disabled={loading || added}
+                        className="hover:bg-primary-600"
+                    >
+                        {loading ? "Adding..." : added ? "Added" : "Add to portfolio"}
+                    </Button>
+                </div>
+                
             </CardContent>
         </Card>
     );

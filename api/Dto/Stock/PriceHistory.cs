@@ -6,7 +6,7 @@ public class PriceHistoryResponse
     public List<HistoricalDataPoint> Historical { get; set; }
 }
 
-public abstract class HistoricalDataPoint
+public class HistoricalDataPoint
 {
     public string Date { get; set; } = null!;
     public decimal Open { get; set; }
@@ -21,6 +21,8 @@ public abstract class HistoricalDataPoint
     public decimal Vwap { get; set; }
     public string Label { get; set; } = null!;
     public decimal ChangeOverTime { get; set; }
+    
+    public HistoricalDataPoint(){}
 }
 
 public class StockPriceInfo

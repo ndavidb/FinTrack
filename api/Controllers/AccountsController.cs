@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dto.Account;
 using api.Interfaces;
 using api.Models;
@@ -38,7 +39,7 @@ public class AccountsController : ControllerBase
 
         var appUser = new AppUser
         {
-            UserName = registerDto.Username,
+            UserName = registerDto.Email,
             Email = registerDto.Email
         };
 
@@ -90,9 +91,9 @@ public class AccountsController : ControllerBase
 
         return Ok(new NewUserDto
         {
-            UserName = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user)
         });
     }
+
 }

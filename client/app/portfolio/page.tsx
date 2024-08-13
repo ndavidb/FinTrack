@@ -2,7 +2,7 @@
 import PortfolioStocksWrapper from "@/components/Portfolio/PortfolioStocksWrapper";
 import PortfolioPerformanceChart from "@/components/Portfolio/PortfolioPerformanceChart";
 import StockListSimple from "@/components/Portfolio/StockListSimple";
-import React from "react";
+import React, {Suspense} from "react";
 import {getPortfolioPerformance, getStocksPortfolio} from "@/lib/data";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button, buttonVariants} from "@/components/ui/button";
@@ -18,7 +18,9 @@ export default async function PortfolioPage() {
                 <>
                     <PortfolioStocksWrapper portfolioPerformance={portfolioPerformance}/>
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                        <PortfolioPerformanceChart className="md:col-span-8"/>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <PortfolioPerformanceChart className="md:col-span-8"/>
+                        </Suspense>
                         <StockListSimple className="md:col-span-4" portfolioData={portfolioData}/>
                     </div>
                     <PortfolioStocksTable portfolioPerformance={portfolioPerformance}/>

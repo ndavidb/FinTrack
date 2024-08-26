@@ -64,7 +64,7 @@ public class PortfolioService : IPortfolioService
             .ToListAsync();
 
         var dailyChanges = await _context.StockPrices
-            .Where(sp => userStocks.Contains(sp.StockId) && sp.Date >= thirtyDaysAgo)
+            .Where(sp => userStocks.Contains(sp.StockId) && sp.Date >= thirtyDaysAgo && sp.Date.DayOfWeek != DayOfWeek.Saturday && sp.Date.DayOfWeek != DayOfWeek.Sunday)
             .GroupBy(sp => new { sp.Symbol, Date = sp.Date.Date })
             .Select(g => new
             {

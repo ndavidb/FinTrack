@@ -55,43 +55,53 @@ public class PortfolioService : IPortfolioService
 
     public async Task<List<PortfolioPerformance>> GetUserPortfolioPerformance(AppUser user)
     {
-        var thirtyDaysAgo = DateTime.UtcNow.AddDays(-31);
-        
+        var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30).Date;
+
         var userStocks = await _context.Portfolios
-            .Where(s => s.AppUserId == user.Id)
-            .Select(s => s.StockId)
+            .Where(p => p.AppUserId == user.Id)
+            .Select(p => p.StockId)
+            .Distinct()
             .ToListAsync();
 
-        var stockPrices = await _context.StockPrices
+        var dailyChanges = await _context.StockPrices
             .Where(sp => userStocks.Contains(sp.StockId) && sp.Date >= thirtyDaysAgo)
-            .GroupBy(sp => sp.Date)
+            .GroupBy(sp => new { sp.Symbol, Date = sp.Date.Date })
             .Select(g => new
             {
-                Date = g.Key,
-                AveragePerformance = g.Average(sp => sp.Price)
+                g.Key.Symbol,
+                g.Key.Date,
+                Price = g.Average(sp => sp.Price)
             })
-            .OrderBy(x => x.Date)
+            .OrderBy(x => x.Symbol)
+            .ThenBy(x => x.Date)
             .ToListAsync();
 
-        var performanceList = new List<PortfolioPerformance>();
-
-        for (int i = 1; i < stockPrices.Count; i++)
-        {
-            var yesterdayPrice = stockPrices[i - 1].AveragePerformance;
-            var todayPrice = stockPrices[i].AveragePerformance;
-
-            var dailyPerformance = yesterdayPrice != 0
-                ? (todayPrice - yesterdayPrice) / yesterdayPrice * 100
-                : 0;
-            
-            performanceList.Add(new PortfolioPerformance
+        var performanceByDate = dailyChanges
+            .GroupBy(dc => dc.Symbol)
+            .SelectMany(g =>
             {
-                Date = stockPrices[i].Date,
-                Performance = Math.Round(dailyPerformance, 2)
-            });
-        }
+                var orderedPrices = g.OrderBy(x => x.Date).ToList();
 
-        return performanceList;
+                return orderedPrices
+                    .Skip(1)
+                    .Select((current, index) =>
+                    {
+                        var previous = orderedPrices[index];
+                        var dailyChangePercent = (current.Price - previous.Price) / previous.Price * 100;
+                        return new { current.Date, dailyChangePercent };
+                    });
+            })
+            .GroupBy(x => x.Date)
+            .Select(g => new PortfolioPerformance
+            {
+                Date = g.Key,
+                Performance = Math.Round(g.Average(x => x.dailyChangePercent), 4)
+            })
+            .OrderBy(x => x.Date)
+            .ToList();
+
+        return performanceByDate;
+
     }
 
     public async Task<bool> AddPortfolioHistory(string symbol)

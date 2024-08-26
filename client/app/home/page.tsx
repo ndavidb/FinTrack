@@ -1,7 +1,9 @@
 
+
 import React from "react";
 import HomePortfolioReview from "@/components/UserHomePortfolio/HomePortfolioReview";
 import SearchWrapper from "@/components/Search/SearchWrapper";
+import toast from "react-hot-toast";
 
 export default function HomeUser() {
     return (

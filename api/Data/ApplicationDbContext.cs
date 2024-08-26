@@ -21,9 +21,11 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Portfolio>(x => 
-            x.HasKey(p => new { p.AppUserId, p.StockId })
-            );
+        builder.Entity<Portfolio>(x =>
+        {
+            x.HasKey(p => new { p.AppUserId, p.StockId });
+            x.HasIndex(p => p.AppUserId);
+        });
         
         builder.Entity<Portfolio>()
             .HasOne(u => u.AppUser)

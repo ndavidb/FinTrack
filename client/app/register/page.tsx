@@ -37,6 +37,7 @@ export default function Register() {
             if (response.ok) {
                 const data = await response.json();
                 Cookies.set('token', data.token);
+                
                 router.push('/home');
             } else {
                 const errorData = await response.json();

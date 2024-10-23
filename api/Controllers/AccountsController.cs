@@ -49,11 +49,28 @@ public class AccountsController : ControllerBase
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
+                if (!result.Succeeded)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // Clean up and simplify error messages
+                    var simplifiedErrors = result.Errors.Select(error =>
+                    {
+                        // Map specific error messages to simpler versions
+                        return error.Description switch
+                        {
+                            var msg when msg.Contains("Passwords must have at least one digit") 
+                                => "Password must contain at least one number",
+                            var msg when msg.Contains("Passwords must have at least one uppercase") 
+                                => "Password must contain at least one uppercase letter",
+                            var msg when msg.Contains("Passwords must have at least one lowercase") 
+                                => "Password must contain at least one lowercase letter",
+                            var msg when msg.Contains("Passwords must have at least one special character") 
+                                => "Password must contain at least one special character",
+                            _ => error.Description
+                        };
+                    }).ToList();
+
+                    return BadRequest(new { errors = simplifiedErrors });
                 }
-                return BadRequest(ModelState);
             }
         }
 

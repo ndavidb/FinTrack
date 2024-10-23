@@ -35,7 +35,7 @@ const Footer = () => {
                 </div>
                 <div className="mt-10 py-10 border-t items-center justify-between sm:flex">
 
-                    <p className="text-md">© 2024 <a href="https://github.com/ndavidb" className="hover:text-blue-600">Nilson
+                    <p className="text-md">© 2024 <a href="https://github.com/ndavidb" className="hover:text-blue-600">
                         David Bello</a>. All rights reserved.</p>
                     <ul className="flex flex-wrap items-center gap-4 mt-6 sm:text-md sm:mt-0">
                         {

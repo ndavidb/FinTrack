@@ -7,21 +7,46 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import Link from "next/link";
 import Brand from "@/components/Brand/Brand";
 import Cookies from "js-cookie";
+
+interface ErrorResponse {
+    $id: string;
+    errors: {
+        $id: string;
+        $values: string[];
+    };
+}
 
 export default function Register() {
     const api = `${process.env.NEXT_PUBLIC_API_URL}/accounts/register`;
     const router = useRouter();
     const { mutate } = useUser();
-    const [error, setError] = useState<string | null>(null);
+    const [errors, setErrors] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    const extractErrors = (errorData: any): string[] => {
+        if (errorData.errors?.$values) {
+            return errorData.errors.$values;
+        }
+
+        if (Array.isArray(errorData)) {
+            return errorData;
+        }
+
+        if (typeof errorData === 'string') {
+            return [errorData];
+        }
+
+        return ['An unexpected error occurred'];
+    };
 
     const handleSubmitRegistration = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setError(null);
+        setErrors([]);
 
         const formData = new FormData(e.target as HTMLFormElement);
         const email = formData.get('email') as string;
@@ -37,15 +62,15 @@ export default function Register() {
             if (response.ok) {
                 const data = await response.json();
                 Cookies.set('token', data.token);
-                
                 router.push('/home');
             } else {
-                const errorData = await response.json();
-                setError(errorData.message || 'Registration failed');
+                const errorData: ErrorResponse = await response.json();
+                const extractedErrors = extractErrors(errorData);
+                setErrors(extractedErrors);
             }
         } catch (error) {
             console.error(error);
-            setError('An error occurred during registration');
+            setErrors(['An error occurred during registration']);
         } finally {
             setIsLoading(false);
         }
@@ -63,7 +88,15 @@ export default function Register() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {error && <div className="text-red-500 mb-4">{error}</div>}
+                        {errors.length > 0 && (
+                            <div className="space-y-2 mb-4">
+                                {errors.map((error, index) => (
+                                    <Alert key={index} variant="destructive">
+                                        <AlertDescription>{error}</AlertDescription>
+                                    </Alert>
+                                ))}
+                            </div>
+                        )}
                         <form className="grid gap-4" onSubmit={handleSubmitRegistration}>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
@@ -78,6 +111,9 @@ export default function Register() {
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input id="password" name="password" type="password" required/>
+                                <p className="text-sm text-gray-500">
+                                    Password must contain at least 6 characters, and one number.
+                                </p>
                             </div>
                             <Button type="submit" className="w-full" disabled={isLoading}>
                                 {isLoading ? 'Creating account...' : 'Create an account'}

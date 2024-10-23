@@ -7,7 +7,7 @@ export default function HomeUser() {
         <>
             <div className="flex flex-col space-y-5">
                 <div className="font-bold text-2xl">Welcome</div>
-                <HomePortfolioReview/>
+                <HomePortfolioReview />
                 <div id="search">
                     <SearchWrapper/>
                 </div>

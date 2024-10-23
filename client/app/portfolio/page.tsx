@@ -19,20 +19,7 @@ export default async function PortfolioPage() {
                 <>
                     <PortfolioStocksWrapper portfolioPerformance={portfolioPerformance}/>
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                        <Suspense
-                            fallback={
-                                <div className="md:col-span-8">
-                                    <Card>
-                                        <CardContent className="pt-6">
-                                            <Skeleton className="h-[400px] w-full" />
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            }
-                        >
                             <PortfolioPerformanceChart className="md:col-span-8"/>
-                        </Suspense>
-
                         <StockListSimple className="md:col-span-4" portfolioData={portfolioData}/>
                     </div>
                     <PortfolioStocksTable portfolioPerformance={portfolioPerformance}/>

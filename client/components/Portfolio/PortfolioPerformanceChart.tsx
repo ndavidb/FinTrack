@@ -7,6 +7,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import {Skeleton} from "@/components/ui/skeleton";
+import { Suspense } from 'react';
 import {
     ChartConfig,
     ChartContainer,
@@ -40,53 +42,65 @@ export default function PortfolioPerformanceChart({ className }: StockPriceChart
 
     return (
         <div className={className}>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
-                </CardHeader>
-                <CardContent className="h-[400px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <ChartContainer config={chartConfig}>
-                            <AreaChart
-                                data={portfolioPerformance}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis
-                                    dataKey="date"
-                                    tickFormatter={(value) => new Date(value).toLocaleDateString()}
-                                    angle={-45}
-                                    textAnchor="end"
-                                    height={70}
-                                />
-                                <YAxis
-                                    tickFormatter={(value) => `${value.toFixed(2)}%`}
-                                />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent
-                                            labelFormatter={(value) => new Date(value).toLocaleDateString()}
-                                            formatter={(value: any) => [`${value.toFixed(2)} %`]}
-                                        />
-                                    }
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="performance"
-                                    stroke="var(--color-performance)"
-                                    fill="var(--color-performance)"
-                                    fillOpacity={0.3}
-                                />
-                            </AreaChart>
-                        </ChartContainer>
-                    </ResponsiveContainer>
-                </CardContent>
-            </Card>
+            <Suspense
+                fallback={
+                    <div className="md:col-span-8">
+                        <Card>
+                            <CardContent className="pt-6">
+                                <Skeleton className="h-[400px] w-full" />
+                            </CardContent>
+                        </Card>
+                    </div>
+                }
+            >
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[400px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <ChartContainer config={chartConfig}>
+                                <AreaChart
+                                    data={portfolioPerformance}
+                                    margin={{
+                                        top: 10,
+                                        right: 30,
+                                        left: 0,
+                                        bottom: 0,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis
+                                        dataKey="date"
+                                        tickFormatter={(value) => new Date(value).toLocaleDateString()}
+                                        angle={-45}
+                                        textAnchor="end"
+                                        height={70}
+                                    />
+                                    <YAxis
+                                        tickFormatter={(value) => `${value.toFixed(2)}%`}
+                                    />
+                                    <ChartTooltip
+                                        content={
+                                            <ChartTooltipContent
+                                                labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                                                formatter={(value: any) => [`${value.toFixed(2)} %`]}
+                                            />
+                                        }
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="performance"
+                                        stroke="var(--color-performance)"
+                                        fill="var(--color-performance)"
+                                        fillOpacity={0.3}
+                                    />
+                                </AreaChart>
+                            </ChartContainer>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
+            </Suspense>
         </div>
     )
 }

@@ -20,7 +20,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {removeStockFromPortfolio} from "@/actions/portfolioActions";
-
+import Link from "next/link";
 interface StockPortfolioPerformance {
     symbol: string;
     companyName: string;
@@ -71,7 +71,7 @@ export default function PortfolioStocksTable({ portfolioPerformance }: Props) {
                         <TableBody>
                             {portfolioPerformance.map((stock) => (
                                 <TableRow key={stock.symbol}>
-                                    <TableCell className="font-medium">{stock.companyName}</TableCell>
+                                    <TableCell className="font-medium"><Link href={`/company/${stock.symbol}/profile`} >{stock.companyName}</Link></TableCell>
                                     <TableCell>{format(new Date(stock.purchaseDate), 'dd-MM-yyyy')}</TableCell>
                                     <TableCell className="hidden md:table-cell">${stock.purchasePrice.toFixed(2)}</TableCell>
                                     <TableCell className="hidden md:table-cell">${stock.currentPrice.toFixed(2)}</TableCell>

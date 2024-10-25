@@ -2,6 +2,7 @@ using api.Data;
 using api.Dto.Account;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,26 +17,26 @@ public class AccountsController : ControllerBase
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
     private readonly ILogger<AccountsController> _logger;
+    private readonly ApplicationDbContext _context;
 
     public AccountsController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         ITokenService tokenService,
-        ILogger<AccountsController> logger)
+        ILogger<AccountsController> logger,
+        ApplicationDbContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _logger = logger;
+        _context = context;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         var appUser = new AppUser
         {
@@ -43,35 +44,11 @@ public class AccountsController : ControllerBase
             Email = registerDto.Email
         };
 
-        if (registerDto.Password != null)
+        var result = await _userManager.CreateAsync(appUser, registerDto.Password);
+        if (!result.Succeeded)
         {
-            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
-
-            if (!result.Succeeded)
-            {
-                if (!result.Succeeded)
-                {
-                    // Clean up and simplify error messages
-                    var simplifiedErrors = result.Errors.Select(error =>
-                    {
-                        // Map specific error messages to simpler versions
-                        return error.Description switch
-                        {
-                            var msg when msg.Contains("Passwords must have at least one digit") 
-                                => "Password must contain at least one number",
-                            var msg when msg.Contains("Passwords must have at least one uppercase") 
-                                => "Password must contain at least one uppercase letter",
-                            var msg when msg.Contains("Passwords must have at least one lowercase") 
-                                => "Password must contain at least one lowercase letter",
-                            var msg when msg.Contains("Passwords must have at least one special character") 
-                                => "Password must contain at least one special character",
-                            _ => error.Description
-                        };
-                    }).ToList();
-
-                    return BadRequest(new { errors = simplifiedErrors });
-                }
-            }
+            _logger.LogError("Failed to create user: {@Errors}", result.Errors);
+            return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
         }
 
         var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
@@ -81,43 +58,119 @@ public class AccountsController : ControllerBase
             return StatusCode(500, "Failed to create user. Please try again later.");
         }
 
-        var token = _tokenService.CreateToken(appUser);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        appUser.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
 
-        return Ok(new NewUserDto
+        return Ok(new AuthResponse
         {
+            AccessToken = await _tokenService.CreateToken(appUser),
+            RefreshToken = refreshToken.Token,
             Email = appUser.Email,
-            Token = token
+            Roles = (await _userManager.GetRolesAsync(appUser)).ToList()
         });
-        // return Ok(new { message = "User created successfully" });
     }
     
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         
-        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+        var user = await _userManager.Users
+            .Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
-        if (user == null)
-        {
-            return Unauthorized("Invalid email or password");
-        }
+        if (user == null) return Unauthorized("Invalid email or password");
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-        if (!result.Succeeded)
-        {
-            return Unauthorized("Invalid email or password");
-        }   
+        if (!result.Succeeded) return Unauthorized("Invalid email or password");
 
-        return Ok(new NewUserDto
+        // Remove expired refresh tokens
+        user.RefreshTokens.RemoveAll(r => r.IsExpired);
+
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
+
+        return Ok(new AuthResponse
         {
+            AccessToken = await _tokenService.CreateToken(user),
+            RefreshToken = refreshToken.Token,
             Email = user.Email,
-            Token = _tokenService.CreateToken(user)
+            Roles = (await _userManager.GetRolesAsync(user)).ToList()
         });
     }
 
+    [Authorize]
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        if (string.IsNullOrEmpty(request.RefreshToken))
+            return BadRequest("Invalid refresh token");
+
+        var user = await _userManager.Users
+            .Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(u => 
+                u.RefreshTokens.Any(t => t.Token == request.RefreshToken));
+
+        if (user == null)
+            return Unauthorized("Invalid refresh token");
+
+        var oldRefreshToken = user.RefreshTokens
+            .Single(x => x.Token == request.RefreshToken);
+
+        if (!oldRefreshToken.IsActive)
+            return Unauthorized("Invalid refresh token");
+
+        // Replace old refresh token with a new one
+        oldRefreshToken.Revoked = DateTime.UtcNow;
+        oldRefreshToken.ReasonRevoked = "Refresh token rotated";
+        
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokens.Add(newRefreshToken);
+        await _context.SaveChangesAsync();
+
+        return Ok(new AuthResponse
+        {
+            AccessToken = await _tokenService.CreateToken(user),
+            RefreshToken = newRefreshToken.Token,
+            Email = user.Email,
+            Roles = (await _userManager.GetRolesAsync(user)).ToList()
+        });
+    }
+
+    [Authorize]
+    [HttpPost("revoke-token")]
+    public async Task<IActionResult> RevokeToken([FromBody] RefreshTokenRequest request)
+    {
+        if (string.IsNullOrEmpty(request.RefreshToken))
+            return BadRequest("Token is required");
+
+        var user = await _userManager.Users
+            .Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(u => 
+                u.RefreshTokens.Any(t => t.Token == request.RefreshToken));
+
+        if (user == null)
+            return NotFound("Token not found");
+
+        var refreshToken = user.RefreshTokens
+            .Single(x => x.Token == request.RefreshToken);
+
+        if (!refreshToken.IsActive)
+            return BadRequest("Token is not active");
+
+        // Revoke token
+        refreshToken.Revoked = DateTime.UtcNow;
+        refreshToken.ReasonRevoked = "Revoked by user";
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+}
+
+public class RefreshTokenRequest
+{
+    public string RefreshToken { get; set; } = string.Empty;
 }

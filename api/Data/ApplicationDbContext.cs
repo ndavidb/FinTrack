@@ -9,13 +9,13 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        
     }
     
     public DbSet<Stock> Stocks { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Portfolio> Portfolios { get; set; }
     public DbSet<StockPrice> StockPrices { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -36,6 +36,12 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             .HasOne(s => s.Stock)
             .WithMany(s => s.Portfolios)
             .HasForeignKey(p => p.StockId);
+        
+        builder.Entity<RefreshToken>()
+            .HasOne(r => r.AppUser)
+            .WithMany(u => u.RefreshTokens)
+            .HasForeignKey(r => r.AppUserId)
+            .OnDelete(DeleteBehavior.Cascade);
         
         List<IdentityRole> roles = new List<IdentityRole>
         {

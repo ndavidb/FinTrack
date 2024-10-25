@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using api.Data;
 using api.Filters;
@@ -9,6 +10,7 @@ using api.Services;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +89,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
     // User settings
     options.User.RequireUniqueEmail = true;
 });
@@ -99,15 +106,29 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:TokenKey"])),
         ValidateIssuer = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey =
-            new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:TokenKey"]))
+        ClockSkew = TimeSpan.Zero
     };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => 
+        policy.RequireRole("Admin"));
+        
+    options.AddPolicy("RequireUserRole", policy => 
+        policy.RequireRole("User"));
+        
+    // Default policy requires authenticated user
+    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
 });
 
 builder.Services.AddHangfire(configuration => configuration
@@ -141,7 +162,7 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+app.UseGlobalExceptionHandler();
 
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();

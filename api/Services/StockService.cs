@@ -50,7 +50,6 @@ public class StockService : IStockService
     public async Task<Stock?> GetStockByIdAsync(int id)
     {
         return await _context.Stocks
-            .Include(c => c.Comments)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 

@@ -20,6 +20,22 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        
+        builder.Entity<Stock>()
+            .HasIndex(s => s.Symbol)
+            .IsUnique();
+        
+        builder.Entity<Stock>()
+            .HasIndex(s => s.CompanyName);
+
+        
+        builder.Entity<StockPrice>()
+            .HasIndex(sp => new { sp.StockId, sp.Date });
+
+        
+        builder.Entity<Portfolio>()
+            .HasIndex(p => p.AppUserId);
 
         builder.Entity<Portfolio>(x =>
         {

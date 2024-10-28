@@ -61,7 +61,7 @@ export default function Register() {
 
             if (response.ok) {
                 const data = await response.json();
-                Cookies.set('token', data.token);
+                Cookies.set('token', data.accessToken);
                 router.push('/home');
             } else {
                 const errorData: ErrorResponse = await response.json();

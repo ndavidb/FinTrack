@@ -1,17 +1,19 @@
 'use client';
 
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Link from "next/link";
 import Image from "next/image";
 import Brand from "@/components/Brand/Brand";
 import {Button, buttonVariants} from "@/components/ui/button";
 import NavHeader from "@/components/navbar/NavHeader";
 import Cookies from "js-cookie";
+import {useLogout} from "@/lib/auth";
 
 export default function Navbar (){
 
     const [state, setState] = useState(false)
     const [isClient, setIsClient] = useState(false);
+    const logout = useLogout();
     
     const menu = [
         {name: "Pricing", path:"#pricing"},
@@ -43,10 +45,13 @@ export default function Navbar (){
                         }
                         <span className='hidden w-px h-6 bg-gray-300 md:block'></span>
                         {isClient && (cookies ? (
-                            <li>
+                            <li className="space-x-2.5">
                                 <Link href="/home" className={buttonVariants({variant: "default"})}>
                                     Dashboard
                                 </Link>
+                                <Button className="bg-black" onClick={logout}>
+                                    Log out
+                                </Button>
                             </li>
                                 
                             ) : (

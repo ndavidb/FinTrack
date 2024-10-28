@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip} from "recharts"
 import {
     Card,
     CardContent,
@@ -8,14 +8,14 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {Skeleton} from "@/components/ui/skeleton";
-import { Suspense } from 'react';
+import {Suspense} from 'react';
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { usePortfolioPerformance } from "@/hooks/usePortfolioPerformance";
+import {usePortfolioPerformance} from "@/hooks/usePortfolioPerformance";
 
 interface StockPriceChartProps {
     className?: string,
@@ -28,10 +28,22 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export default function PortfolioPerformanceChart({ className }: StockPriceChartProps) {
-    const { data: portfolioPerformance, error, isLoading } = usePortfolioPerformance();
+export default function PortfolioPerformanceChart({className}: StockPriceChartProps) {
+    const {data: portfolioPerformance, error, isLoading} = usePortfolioPerformance();
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return (
+        <div className="md:col-span-8">
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                    <Skeleton className="h-[400px] w-full"/>
+                </CardContent>
+            </Card>
+        </div>
+    )
     if (error) {
         if (error.status === 401) {
             return <div>Your session has expired. Please log in again to view your portfolio performance.</div>
@@ -40,23 +52,13 @@ export default function PortfolioPerformanceChart({ className }: StockPriceChart
     }
     if (!portfolioPerformance) return null
 
+    // @ts-ignore
     return (
         <div className={className}>
-            <Suspense
-                fallback={
-                    <div className="md:col-span-8">
-                        <Card>
-                            <CardContent className="pt-6">
-                                <Skeleton className="h-[400px] w-full" />
-                            </CardContent>
-                        </Card>
-                    </div>
-                }
-            >
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
-                    </CardHeader>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-xl">General Stocks Performance - Last 30 Days</CardTitle>
+                </CardHeader>
                     <CardContent className="h-[400px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <ChartContainer config={chartConfig}>
@@ -69,7 +71,7 @@ export default function PortfolioPerformanceChart({ className }: StockPriceChart
                                         bottom: 0,
                                     }}
                                 >
-                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <CartesianGrid strokeDasharray="3 3"/>
                                     <XAxis
                                         dataKey="date"
                                         tickFormatter={(value) => new Date(value).toLocaleDateString()}
@@ -100,7 +102,6 @@ export default function PortfolioPerformanceChart({ className }: StockPriceChart
                         </ResponsiveContainer>
                     </CardContent>
                 </Card>
-            </Suspense>
         </div>
     )
 }

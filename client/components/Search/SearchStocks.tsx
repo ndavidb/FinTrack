@@ -1,6 +1,5 @@
 ﻿import Searchbar from "@/components/Search/Searchbar";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {ChangeEvent, SyntheticEvent} from "react";
 
 interface Props {
@@ -8,9 +7,16 @@ interface Props {
     search: string | undefined;
     placeholder: string;
     handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    isLoading?: boolean;
 }
 
-export default function SearchStocks({search, onSearchSubmit, handleSearchChange, placeholder}: Props) {
+export default function SearchStocks({
+                                         search,
+                                         onSearchSubmit,
+                                         handleSearchChange,
+                                         placeholder,
+                                         isLoading = false
+                                     }: Props) {
     return (
         <>
             <Card className="sm:col-span-2 border-none [&>*]:pl-5">
@@ -19,10 +25,15 @@ export default function SearchStocks({search, onSearchSubmit, handleSearchChange
                     <CardDescription>Search for any stock of NASDAQ</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-row p-4 w-3/4 items-center">
-                    <Searchbar placeholder={placeholder} handleSearchChange={handleSearchChange}
-                               onSearchSubmit={onSearchSubmit} search={search}/>
+                    <Searchbar
+                        placeholder={placeholder}
+                        handleSearchChange={handleSearchChange}
+                        onSearchSubmit={onSearchSubmit}
+                        search={search}
+                        isLoading={isLoading}
+                    />
                 </CardContent>
             </Card>
         </>
     );
-};
+}

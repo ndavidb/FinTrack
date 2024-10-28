@@ -38,11 +38,27 @@ public class PortfoliosController : ControllerBase
     [Authorize]
     public async Task<ActionResult<List<StockPortfolioDto>>> GetUserPortfolio()
     {
-        var username = User.GetUsername();
-        var appUser = await _userManager.FindByNameAsync(username);
-        var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);
+        try
+        {
+            var username = User.GetUsername();
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized("Invalid user");
+            }
 
-        return Ok(userPortfolio);
+            var appUser = await _userManager.FindByNameAsync(username);
+            if (appUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var userPortfolio = await _portfolioService.GetUserPortfolio(appUser);
+            return Ok(userPortfolio);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while retrieving the portfolio");
+        }
     }
 
     [HttpGet]

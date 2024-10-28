@@ -26,21 +26,36 @@ public class PortfolioService : IPortfolioService
 
     public async Task<List<StockPortfolioDto>> GetUserPortfolio(AppUser user)
     {
-        var userPortfolio = await _context.Portfolios
-            .Where(p => p.AppUserId == user.Id)
-            .Select(portfolio => new StockPortfolioDto
-            {
-                Id = portfolio.Stock.Id,
-                Symbol = portfolio.Stock.Symbol,
-                CompanyName = portfolio.Stock.CompanyName,
-                Industry = portfolio.Stock.Industry,
-                Website = UrlManagement.CleanUrl(portfolio.Stock.Website),
-                PurchaseDate = portfolio.PurchaseDate,
-                PurchasePrice = portfolio.PurchasePrice
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user), "User cannot be null");
+        }
 
-            }).ToListAsync();
-        
-        return userPortfolio;
+        try
+        {
+            var userPortfolio = await _context.Portfolios
+                .Where(p => p.AppUserId == user.Id)
+                .Include(p => p.Stock)
+                .Select(portfolio => new StockPortfolioDto
+                {
+                    Id = portfolio.Stock.Id,
+                    Symbol = portfolio.Stock.Symbol,
+                    CompanyName = portfolio.Stock.CompanyName,
+                    Industry = portfolio.Stock.Industry,
+                    Website = UrlManagement.CleanUrl(portfolio.Stock.Website),
+                    PurchaseDate = portfolio.PurchaseDate,
+                    PurchasePrice = portfolio.PurchasePrice
+
+                }).ToListAsync();
+            
+            return userPortfolio;
+
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while getting portfolio {UserId}", user.Id);
+            throw;
+        }
     }
 
     public async Task<Portfolio> AddPortfolioAsync(Portfolio portfolio)

@@ -29,12 +29,14 @@ public class TokenService : ITokenService
         
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.NameId, user.UserName),
-            new(ClaimTypes.NameIdentifier, user.Id)
+            new(JwtRegisteredClaimNames.Sub, user.Id),               
+            new(JwtRegisteredClaimNames.Email, user.Email),          
+            new(JwtRegisteredClaimNames.Name, user.UserName),        
+            new(ClaimTypes.NameIdentifier, user.Id),                 
+            new(ClaimTypes.Email, user.Email)                        
         };
 
-        // Add roles to claims
+        // Roles
         claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
         
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

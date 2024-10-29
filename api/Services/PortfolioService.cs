@@ -162,32 +162,49 @@ public class PortfolioService : IPortfolioService
 
     public async Task<List<StockPerformanceDto>> GetUserStocksPerformance(AppUser user)
     {
-        var performances = await _context.Portfolios
-            .Where(p => p.AppUserId == user.Id)
-            .Select(p => new
-            {
-                p.Stock.Symbol,
-                p.Stock.CompanyName,
-                p.Stock.Website,
-                p.PurchaseDate,
-                p.PurchasePrice,
-                LatestPrice = DateOnly.FromDateTime(p.PurchaseDate) == DateOnly.FromDateTime(DateTime.Today) ? p.PurchasePrice : _context.StockPrices
-                    .Where(sp => sp.StockId == p.StockId)
-                    .OrderByDescending(sp => sp.Date)
-                    .Select(sp => sp.Price)
-                    .FirstOrDefault()
-            })
-            .ToListAsync();
-        
-        return performances.Select(p => new StockPerformanceDto
+        try 
         {
-            Symbol = p.Symbol,
-            CompanyName = p.CompanyName,
-            Website = UrlManagement.CleanUrl(p.Website),
-            PurchaseDate = p.PurchaseDate,
-            PurchasePrice = p.PurchasePrice,
-            CurrentPrice =  p.LatestPrice,
-            Performance = (p.LatestPrice - p.PurchasePrice) / p.PurchasePrice * 100
-        }).ToList();
+            var today = DateTime.UtcNow.Date; // Use UTC for consistency
+        
+            var portfolioStocks = await _context.Portfolios
+                .Include(p => p.Stock)
+                .Where(p => p.AppUserId == user.Id)
+                .ToListAsync();
+
+            var stockIds = portfolioStocks.Select(p => p.StockId).Distinct().ToList();
+        
+            // Get latest prices in a separate query
+            var latestPrices = await _context.StockPrices
+                .Where(sp => stockIds.Contains(sp.StockId))
+                .GroupBy(sp => sp.StockId)
+                .Select(g => new
+                {
+                    StockId = g.Key,
+                    LatestPrice = g.OrderByDescending(sp => sp.Date)
+                        .Select(sp => sp.Price)
+                        .FirstOrDefault()
+                })
+                .ToDictionaryAsync(x => x.StockId, x => x.LatestPrice);
+
+            return portfolioStocks.Select(p => new StockPerformanceDto
+            {
+                Symbol = p.Stock.Symbol,
+                CompanyName = p.Stock.CompanyName,
+                Website = UrlManagement.CleanUrl(p.Stock.Website),
+                PurchaseDate = p.PurchaseDate,
+                PurchasePrice = p.PurchasePrice,
+                CurrentPrice = p.PurchaseDate.Date == today ? 
+                    p.PurchasePrice : 
+                    latestPrices.GetValueOrDefault(p.StockId, p.PurchasePrice),
+                Performance = p.PurchaseDate.Date == today ? 
+                    0 : 
+                    ((latestPrices.GetValueOrDefault(p.StockId, p.PurchasePrice) - p.PurchasePrice) / p.PurchasePrice * 100)
+            }).ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting stock performance for user {UserId}", user.Id);
+            throw;
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace api.Controllers;
 [Route("[controller]")]
 public class PortfoliosController : ControllerBase
 {
+    private readonly ILogger<PortfoliosController> _logger;
     private readonly IPortfolioService _portfolioService;
     private readonly IStockService _stockService;
     private readonly UserManager<AppUser> _userManager;
@@ -25,13 +26,14 @@ public class PortfoliosController : ControllerBase
         IPortfolioService portfolioService,
         IStockService stockService,
         UserManager<AppUser> userManager,
-        IFmpService fmpService
-    )
+        IFmpService fmpService,
+        ILogger<PortfoliosController> logger)
     {
         _portfolioService = portfolioService;
         _stockService = stockService;
         _userManager = userManager;
         _fmpService = fmpService;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -66,11 +68,30 @@ public class PortfoliosController : ControllerBase
     [Authorize]
     public async Task<ActionResult<List<StockPerformanceDto>>> GetUserStocksPerformance()
     {
-        var username = User.GetUsername();
-        var appUser = await _userManager.FindByNameAsync(username);
-        var performanceStocksPortfolio = await _portfolioService.GetUserStocksPerformance(appUser);
+        try 
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+        
+            if (appUser == null)
+            {
+                _logger.LogWarning("User not found for username: {Username}", username);
+                return Unauthorized("User not found");
+            }
 
-        return Ok(performanceStocksPortfolio);
+            var performanceStocksPortfolio = await _portfolioService.GetUserStocksPerformance(appUser);
+            return Ok(performanceStocksPortfolio);
+        }
+        catch (ArgumentNullException ex)
+        {
+            _logger.LogError(ex, "Invalid argument in GetUserStocksPerformance");
+            return BadRequest("Invalid request parameters");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in GetUserStocksPerformance");
+            return StatusCode(500, "An error occurred while processing your request");
+        }
     }
 
     [HttpGet]

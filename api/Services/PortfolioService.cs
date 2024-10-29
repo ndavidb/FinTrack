@@ -161,50 +161,83 @@ public class PortfolioService : IPortfolioService
     }
 
     public async Task<List<StockPerformanceDto>> GetUserStocksPerformance(AppUser user)
+{
+    if (user == null)
     {
-        try 
+        _logger.LogError("GetUserStocksPerformance called with null user");
+        throw new ArgumentNullException(nameof(user));
+    }
+
+    try 
+    {
+        var today = DateTime.UtcNow.Date;
+        
+        // Get portfolio stocks with explicit loading of Stock navigation property
+        var portfolioStocks = await _context.Portfolios
+            .Include(p => p.Stock)
+            .Where(p => p.AppUserId == user.Id && p.Stock != null) // Ensure Stock is not null
+            .ToListAsync();
+
+        if (!portfolioStocks.Any())
         {
-            var today = DateTime.UtcNow.Date; // Use UTC for consistency
-        
-            var portfolioStocks = await _context.Portfolios
-                .Include(p => p.Stock)
-                .Where(p => p.AppUserId == user.Id)
-                .ToListAsync();
+            _logger.LogInformation($"No portfolio stocks found for user {user.Id}");
+            return new List<StockPerformanceDto>();
+        }
 
-            var stockIds = portfolioStocks.Select(p => p.StockId).Distinct().ToList();
+        var stockIds = portfolioStocks
+            .Where(p => p.Stock != null)
+            .Select(p => p.StockId)
+            .Distinct()
+            .ToList();
         
-            // Get latest prices in a separate query
-            var latestPrices = await _context.StockPrices
-                .Where(sp => stockIds.Contains(sp.StockId))
-                .GroupBy(sp => sp.StockId)
-                .Select(g => new
-                {
-                    StockId = g.Key,
-                    LatestPrice = g.OrderByDescending(sp => sp.Date)
-                        .Select(sp => sp.Price)
-                        .FirstOrDefault()
-                })
-                .ToDictionaryAsync(x => x.StockId, x => x.LatestPrice);
+        // Get latest prices with null check
+        var latestPrices = await _context.StockPrices
+            .Where(sp => stockIds.Contains(sp.StockId))
+            .GroupBy(sp => sp.StockId)
+            .Select(g => new
+            {
+                StockId = g.Key,
+                LatestPrice = g.OrderByDescending(sp => sp.Date)
+                    .Select(sp => sp.Price)
+                    .FirstOrDefault()
+            })
+            .ToDictionaryAsync(x => x.StockId, x => x.LatestPrice);
 
-            return portfolioStocks.Select(p => new StockPerformanceDto
+        var result = new List<StockPerformanceDto>();
+
+        foreach (var p in portfolioStocks)
+        {
+            if (p.Stock == null) continue;
+
+            var currentPrice = p.PurchaseDate.Date == today
+                ? p.PurchasePrice
+                : latestPrices.GetValueOrDefault(p.StockId, p.PurchasePrice);
+
+            var performance = p.PurchaseDate.Date == today
+                ? 0
+                : ((currentPrice - p.PurchasePrice) / p.PurchasePrice * 100);
+
+            result.Add(new StockPerformanceDto
             {
                 Symbol = p.Stock.Symbol,
                 CompanyName = p.Stock.CompanyName,
-                Website = UrlManagement.CleanUrl(p.Stock.Website),
+                Website = !string.IsNullOrEmpty(p.Stock.Website) 
+                    ? UrlManagement.CleanUrl(p.Stock.Website) 
+                    : string.Empty,
                 PurchaseDate = p.PurchaseDate,
                 PurchasePrice = p.PurchasePrice,
-                CurrentPrice = p.PurchaseDate.Date == today ? 
-                    p.PurchasePrice : 
-                    latestPrices.GetValueOrDefault(p.StockId, p.PurchasePrice),
-                Performance = p.PurchaseDate.Date == today ? 
-                    0 : 
-                    ((latestPrices.GetValueOrDefault(p.StockId, p.PurchasePrice) - p.PurchasePrice) / p.PurchasePrice * 100)
-            }).ToList();
+                CurrentPrice = currentPrice,
+                Performance = performance
+            });
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting stock performance for user {UserId}", user.Id);
-            throw;
-        }
+
+        return result;
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error getting stock performance for user {UserId}: {Message}", 
+            user.Id, ex.Message);
+        throw;
+    }
+}
 }

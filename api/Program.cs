@@ -26,12 +26,12 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "https://www.ndavidbello.live",
                 "https://ndavidbello.live",
-                "https://fintrack-backend.azurewebsites.net",
-                "http://localhost:3000"
+                "https://fintrack-backend.azurewebsites.net"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();
+            .AllowCredentials()
+            .SetIsOriginAllowed((host) => true);
     });
 });
 

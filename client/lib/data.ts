@@ -109,21 +109,33 @@ export async function getCompanyIncomeStatement(query: string) {
     }
 }
 
-export async function   getStocksPortfolio() : Promise<StockPortfolio[]> {
+export async function getStocksPortfolio(): Promise<StockPortfolio[]> {
     nonStore();
-    
+
     const {cookies} = await import('next/headers');
     const cookieManager = cookies();
-    
+
     const token = cookieManager.get('token')?.value;
+
+    if (!token) {
+        throw new Error('No authentication token found');
+    }
+
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Portfolios`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             },
             credentials: 'include',
+            cache: 'no-store'
         });
+
+        if (response.status === 401) {
+            // Handle unauthorized access
+            throw new Error('Unauthorized access');
+        }
 
         if (!response.ok) {
             throw new Error(`Request failed with status ${response.status}`);
@@ -131,12 +143,12 @@ export async function   getStocksPortfolio() : Promise<StockPortfolio[]> {
 
         const data = await response.json();
 
-        if (!Array.isArray(data)) {
+        if (!Array.isArray(data.$values)) {
             console.error('Received non-array data:', data);
             throw new Error('Invalid data format received from server');
         }
 
-        return data as StockPortfolio[];
+        return data.$values as StockPortfolio[];
     } catch (error: any) {
         console.error('Error fetching portfolio:', error.message);
         throw error;

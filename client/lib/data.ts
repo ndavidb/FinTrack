@@ -143,12 +143,12 @@ export async function getStocksPortfolio(): Promise<StockPortfolio[]> {
 
         const data = await response.json();
 
-        if (!Array.isArray(data.$values)) {
+        if (!Array.isArray(data)) {
             console.error('Received non-array data:', data);
             throw new Error('Invalid data format received from server');
         }
 
-        return data.$values as StockPortfolio[];
+        return data as StockPortfolio[];
     } catch (error: any) {
         console.error('Error fetching portfolio:', error.message);
         throw error;

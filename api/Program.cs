@@ -26,7 +26,8 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "https://www.ndavidbello.live",
                 "https://ndavidbello.live",
-                "https://fintrack-backend.azurewebsites.net"
+                "https://fintrack-backend.azurewebsites.net",
+                "https://fin-track-rho.vercel.app/"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()

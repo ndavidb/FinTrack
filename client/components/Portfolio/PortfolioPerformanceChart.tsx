@@ -21,6 +21,11 @@ interface StockPriceChartProps {
     className?: string,
 }
 
+interface PortfolioPerformanceData {
+    date: string;
+    performance: number;
+}
+
 const chartConfig = {
     performance: {
         label: "Performance",
@@ -30,6 +35,7 @@ const chartConfig = {
 
 export default function PortfolioPerformanceChart({className}: StockPriceChartProps) {
     const {data: portfolioPerformance, error, isLoading} = usePortfolioPerformance();
+    
 
     if (isLoading) return (
         <div className="md:col-span-8">

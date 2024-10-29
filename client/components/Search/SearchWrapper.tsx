@@ -3,7 +3,6 @@ import React, { ChangeEvent, SyntheticEvent, useEffect, useCallback, useState } 
 import { searchCompanies } from "@/lib/data";
 import SearchStocks from "@/components/Search/SearchStocks";
 import SearchResultList from "@/components/Search/SearchResultList";
-import { debounce } from 'lodash';
 
 export default function SearchWrapper() {
     const [search, setSearch] = useState<string>("");
@@ -11,52 +10,45 @@ export default function SearchWrapper() {
     const [serverError, setServerError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    // Create a debounced search function
-    const debouncedSearch = useCallback(
-        debounce(async (query: string) => {
-            if (query.length >= 3) {
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+    };
+
+    const performSearch = async (searchTerm: string) => {
+        if (searchTerm.length >= 3) {
+            try {
                 setIsLoading(true);
-                try {
-                    const result = await searchCompanies(query);
-                    if (typeof result === "string") {
-                        setServerError(result);
-                        setSearchResult([]);
-                    } else {
-                        setSearchResult(result!);
-                        setServerError(null);
-                    }
-                } catch (error) {
-                    setServerError("An error occurred while searching");
-                    setSearchResult([]);
+                const result = await searchCompanies(searchTerm);
+                if (typeof result === "string") {
+                    setServerError(result);
+                } else {
+                    setSearchResult(result!);
+                    setServerError(null);
                 }
                 setIsLoading(false);
-            } else {
-                setSearchResult([]);
-                setServerError(null);
+            } catch (error) {
+                setServerError("Error performing search");
             }
-        }, 300), // 300ms delay
-        []
-    );
-
-    // Handle search input changes
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearch(value);
-        debouncedSearch(value);
+        } else {
+            setSearchResult([]);
+        }
     };
 
-    // Handle manual search submit (keeping this for accessibility)
-    const onSearchSubmit = (e: SyntheticEvent) => {
-        e.preventDefault();
-        debouncedSearch(search);
-    };
-
-    // Cleanup debounce on component unmount
+    // Real-time search with debouncing
     useEffect(() => {
-        return () => {
-            debouncedSearch.cancel();
-        };
-    }, [debouncedSearch]);
+        const timeoutId = setTimeout(() => {
+            performSearch(search);
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [search]);
+
+    // Button-triggered search
+    const onSearchSubmit = async (e: SyntheticEvent) => {
+        e.preventDefault();
+        await performSearch(search);
+    };
+    
 
     return (
         <>

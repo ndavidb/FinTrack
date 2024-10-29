@@ -39,7 +39,7 @@ export default function Searchbar({
                 >
                     {isLoading ? (
                         <>
-                            <Loader2 className="mr-1 h-2 w-2 animate-spin" />
+                            <Loader2 className="mr-2 mb-3 h-2 w-2 animate-spin" />
                             Searching
                         </>
                     ) : (

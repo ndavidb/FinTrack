@@ -51,6 +51,7 @@ public class PortfoliosController : ControllerBase
             var appUser = await _userManager.FindByNameAsync(username);
             if (appUser == null)
             {
+                _logger.LogWarning($"User not found for email: {username}");
                 return NotFound("User not found");
             }
 

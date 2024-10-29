@@ -49,9 +49,6 @@ export default function Navbar (){
                                 <Link href="/home" className={buttonVariants({variant: "default"})}>
                                     Dashboard
                                 </Link>
-                                <Button className="bg-black" onClick={logout}>
-                                    Log out
-                                </Button>
                             </li>
                                 
                             ) : (

@@ -58,6 +58,16 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             .WithMany(u => u.RefreshTokens)
             .HasForeignKey(r => r.AppUserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<AppUser>()
+            .HasIndex(u => u.Email);
+        
+        builder.Entity<RefreshToken>()
+            .HasIndex(r => r.Token);
+        
+        // Add composite index for active refresh tokens
+        builder.Entity<RefreshToken>()
+            .HasIndex(r => new { r.Token, r.Revoked, r.Expires });
         
         List<IdentityRole> roles = new List<IdentityRole>
         {

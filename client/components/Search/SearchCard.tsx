@@ -40,7 +40,7 @@ export default function SearchCard({ id, searchResult }: Props) {
                 <Link href={`company/${searchResult.symbol}/profile`} className="font-medium">
                     {searchResult.name} - {searchResult.symbol}
                 </Link>
-                <div className="flex gap-x-2">
+                <div className="flex-col text-right space-y-1 md:space-x-2 md:flex-row">
                     
                     <Button 
                         size="sm"

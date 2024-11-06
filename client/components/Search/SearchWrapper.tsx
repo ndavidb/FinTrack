@@ -1,8 +1,9 @@
 'use client';
-import React, { ChangeEvent, SyntheticEvent, useEffect, useCallback, useState } from "react";
-import { searchCompanies } from "@/lib/data";
+import React, {ChangeEvent, SyntheticEvent, useEffect, useCallback, useState} from "react";
+import {searchCompanies} from "@/lib/data";
 import SearchStocks from "@/components/Search/SearchStocks";
 import SearchResultList from "@/components/Search/SearchResultList";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
 export default function SearchWrapper() {
     const [search, setSearch] = useState<string>("");
@@ -48,10 +49,10 @@ export default function SearchWrapper() {
         e.preventDefault();
         await performSearch(search);
     };
-    
+
 
     return (
-        <>
+        <div className="relative">
             <SearchStocks
                 placeholder="Search stocks"
                 handleSearchChange={handleSearchChange}
@@ -59,13 +60,14 @@ export default function SearchWrapper() {
                 search={search}
                 isLoading={isLoading}
             />
-
-            <SearchResultList searchResults={searchResult}/>
+            <ScrollArea>
+                <SearchResultList searchResults={searchResult}/>
+            </ScrollArea>
             {serverError && (
                 <div className="px-2 text-sm text-red-500">
                     {serverError}
                 </div>
             )}
-        </>
+        </div>
     );
 }

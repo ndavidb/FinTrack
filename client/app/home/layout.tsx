@@ -4,18 +4,16 @@ import Footer from "@/components/Footer/Footer";
 
 const Layout = ({children}: {children: React.ReactNode}) => {
     return (
-        <div className="bg-gray-100">
-            <UserNavbar/>
-            <div className="h-screen flex-col md:flex-row md:overflow-hidden max-w-screen-xl mx-auto">
-                <div className="flex flex-col w-full h-full">
-                    <div className="flex-grow p-6 md:overflow-y-auto md:px-8">
-                        {children}
-                    </div>
+        <div className="min-h-screen flex flex-col bg-gray-100">
+            <UserNavbar />
+            <main className="flex-grow max-w-screen-xl w-full mx-auto">
+                <div className="h-full p-6 md:px-8">
+                    {children}
                 </div>
-            </div>
+            </main>
             <Footer />
         </div>
-
     );
 };
+
 export default Layout;

@@ -26,12 +26,10 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function Login() {
     const api = `${process.env.NEXT_PUBLIC_API_URL}/accounts/login`;
     const router = useRouter();
-    const searchParams = useSearchParams();
     const { mutate } = useUser();
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     
-    const returnUrl = searchParams.get('returnUrl') || '/home';
 
     const {
         register,
@@ -62,7 +60,7 @@ export default function Login() {
                 });
 
                 await mutate(data);
-                router.push(returnUrl);
+                router.push("/home");
             } else {
                 setError(data.message || 'Login failed');
             }

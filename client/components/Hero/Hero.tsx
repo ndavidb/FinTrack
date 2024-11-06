@@ -18,12 +18,12 @@ export default function Hero() {
                         </span>
                     </h2>
                     <div className="flex items-center justify-center gap-x-6 mt-8">
-                        <Link
-                            href="/"
+                        <a
+                            href="#FAQS"
                             className={buttonVariants({ variant: "outline" })}
                         >
-                            Features
-                        </Link>
+                            FAQs
+                        </a>
                         <Link
                             href="/register"
                             className={buttonVariants({ variant: "default" })}

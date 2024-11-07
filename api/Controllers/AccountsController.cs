@@ -138,7 +138,7 @@ public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
             if (user == null)
             {
                 _logger.LogWarning("Login attempt failed for non-existent user: {Email}", loginDto.Email);
-                return Unauthorized("Invalid email or password");
+                return Unauthorized(new {message = "Invalid email or password"} );
             }
 
             // Check password
@@ -146,7 +146,7 @@ public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
             if (!result.Succeeded)
             {
                 _logger.LogWarning("Failed login attempt for user: {Email}", loginDto.Email);
-                return Unauthorized("Invalid email or password");
+                return Unauthorized(new {message = "Invalid email or password"} );
             }
 
             // Get roles first

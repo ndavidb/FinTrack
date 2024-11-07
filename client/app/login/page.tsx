@@ -50,9 +50,8 @@ export default function Login() {
                 body: JSON.stringify(formData),
             });
 
-            const data = await response.json();
-
             if (response.ok) {
+                const data = await response.json();
                 Cookies.set('token', data.accessToken, {
                     expires: 3,
                     secure: process.env.NODE_ENV === 'production',
@@ -62,7 +61,15 @@ export default function Login() {
                 await mutate(data);
                 router.push("/home");
             } else {
-                setError(data.message || 'Login failed');
+                // Handle both JSON and text responses
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    setError(errorData.message || 'Login failed');
+                } else {
+                    const errorText = await response.text();
+                    setError(errorText || 'Login failed');
+                }
             }
         } catch (error) {
             setError('An unexpected error occurred. Please try again.');

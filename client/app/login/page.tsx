@@ -34,6 +34,7 @@ export default function Login() {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -78,6 +79,15 @@ export default function Login() {
         }
     };
 
+    const fillDemoAccount = () => {
+        // Set demo account credentials
+        setValue('email', 'testing@example.com');
+        setValue('password', 'test123');
+
+        // Automatically submit the form with demo credentials
+        handleSubmit(onSubmit)();
+    };
+
     return (
         <main className="w-full min-h-screen lg:grid lg:grid-cols-2">
             <div className="min-h-screen flex items-center justify-center">
@@ -101,6 +111,15 @@ export default function Login() {
 
                     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid gap-4">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                className="border-2 border-black"
+                                onClick={fillDemoAccount}
+                                disabled={isLoading}
+                            >
+                                Try Demo Account
+                            </Button>
                             <Label htmlFor="email" className="text-md">Email</Label>
                             <Input
                                 {...register('email')}

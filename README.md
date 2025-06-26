@@ -2,10 +2,6 @@
 
 FinTrack is a demo stock portfolio tracking application built with .NET 8 and Next.js. The application allows users to search for stocks, create portfolios, and track their performance over time.
 
-## Demo
-
-[https://fin-track-rho.vercel.app](https://fin-track-rho.vercel.app)  
-
 
 ## Features
 
